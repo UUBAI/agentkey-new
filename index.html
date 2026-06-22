@@ -1634,6 +1634,17 @@ img, svg, video, canvas{
   .why-right{width:100%!important;min-height:600px!important}
 }
 @media(min-width:521px) and (max-width:1040px){
+  .why-wrap{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:36px!important;
+    width:auto!important;
+  }
+  .why-left{
+    width:100%;
+    position:static;
+    top:auto;
+  }
   .why-nav{
     display:grid;
     grid-template-columns:repeat(4,minmax(0,1fr));
@@ -1654,7 +1665,13 @@ img, svg, video, canvas{
     line-height:1.25;
   }
   .why-right{
+    width:100%!important;
     min-height:560px!important;
+  }
+}
+@media(min-width:769px) and (max-width:1040px){
+  .why-wrap{
+    padding:80px 126px!important;
   }
 }
 @media(max-width:768px){
