@@ -1180,8 +1180,19 @@ img, svg, video, canvas{
   }
   .why-h2{font-size:clamp(32px,3.2vw,42px)}
   .why-subtitle{font-size:clamp(15px,1.6vw,20px)}
+  .why-nav{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+  }
   .why-nav-item{padding:11px 13px}
-  .why-nav-txt{font-size:clamp(13px,1.25vw,16px);line-height:1.25}
+  .why-nav-txt{
+    min-width:0;
+    text-align:center;
+    overflow-wrap:anywhere;
+    font-size:clamp(12px,1.05vw,14px);
+    line-height:1.25;
+  }
   .why-right{
     width:100%;
     min-width:0;
