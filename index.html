@@ -1590,6 +1590,21 @@ img, svg, video, canvas{
   .provider-toggle{width:100%}
   .provider-expand{width:100%}
   .why-wrap{display:flex!important;flex-direction:column!important;gap:36px!important}
+  .why-nav{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  .why-nav-item{
+    min-width:0;
+    justify-content:center;
+    text-align:center;
+    padding:12px 10px;
+  }
+  .why-nav-txt{
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
   .why-right{width:100%!important;min-height:600px!important}
 }
 @media(max-width:768px){
