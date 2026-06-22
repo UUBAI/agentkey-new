@@ -1587,9 +1587,9 @@ img, svg, video, canvas{
   .v3-usecases .input-shell{height:47px}
   .v3-usecases .reply-label{font-size:12px}
   .friction-wrap{padding:64px 126px 48px}
-  .friction-right{overflow:hidden}
+  .friction-right{overflow:visible}
   .friction-stack{
-    width:min(100%,525px);
+    width:min(525px,calc(100% / 1.5181));
     height:auto;
     aspect-ratio:525/401;
     max-width:100%;
@@ -1692,7 +1692,7 @@ img, svg, video, canvas{
   .v3-usecases .agent-dots{display:none}
   .why-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
   .friction-wrap{padding:56px 16px 40px}
-  .friction-stack{width:min(100%,420px);max-width:100%}
+  .friction-stack{width:min(420px,calc(100% / 1.42));max-width:100%}
   .friction-layer-back,
   .friction-layer-mid,
   .friction-layer-front{width:142%;height:142%;top:calc(50% + 8px)}
