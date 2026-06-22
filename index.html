@@ -244,7 +244,7 @@ a.hero-join--standalone{display:flex;align-items:center;justify-content:center;p
 }
 .hero-proof{display:flex;align-items:center;margin-top:28px;gap:12px}
 .hero-avatars{display:flex;align-items:center;position:relative;min-height:28px}
-.hero-av{width:28px;height:28px;border-radius:50%;border:2px solid #FAF9F6;background-size:cover;background-position:center;flex-shrink:0;position:relative;transform-origin:center}
+.hero-av{width:28px;height:28px;border-radius:50%;border:2px solid #FAF9F6;background-size:cover;background-position:center;flex-shrink:0;position:relative;transform-origin:center;display:block;object-fit:cover;background-color:transparent}
 .hero-av+.hero-av{margin-left:-8px}
 /* Left = newest; higher z-index so the stack reads clearly */
 .hero-avatars .hero-av:nth-child(1){z-index:5}
@@ -1961,10 +1961,10 @@ img, svg, video, canvas{
   </div>
   <div class="hero-proof">
     <div class="hero-avatars" id="hero-avatars" role="group" aria-label="Recent signups">
-      <div class="hero-av" style="background-image:url('local-assets/paper/hero-avatar-1.png')"></div>
-      <div class="hero-av" style="background-image:url('local-assets/paper/hero-avatar-2.png')"></div>
-      <div class="hero-av" style="background-image:url('local-assets/paper/hero-avatar-3.png')"></div>
-      <div class="hero-av" style="background-image:url('local-assets/paper/hero-avatar-4.png')"></div>
+      <img class="hero-av" src="local-assets/paper/hero-avatar-1.png" width="28" height="28" alt="" decoding="async" fetchpriority="high">
+      <img class="hero-av" src="local-assets/paper/hero-avatar-2.png" width="28" height="28" alt="" decoding="async" fetchpriority="high">
+      <img class="hero-av" src="local-assets/paper/hero-avatar-3.png" width="28" height="28" alt="" decoding="async" fetchpriority="high">
+      <img class="hero-av" src="local-assets/paper/hero-avatar-4.png" width="28" height="28" alt="" decoding="async" fetchpriority="high">
     </div>
     <span class="hero-proof-txt" data-i18n="hero.proof">1,200+ people already signed up</span>
   </div>
@@ -3876,14 +3876,21 @@ function heroSubmit() {
   function tick() {
     var url = POOL[idx % POOL.length];
     idx++;
-    var el = document.createElement('div');
+    var el = document.createElement('img');
     el.className = 'hero-av hero-av--join';
     el.setAttribute('aria-hidden', 'true');
-    el.style.backgroundImage = "url('" + url + "')";
-    wrap.insertBefore(el, wrap.firstChild);
-    while (wrap.children.length > maxVisible) {
-      wrap.removeChild(wrap.lastChild);
-    }
+    el.alt = '';
+    el.width = 28;
+    el.height = 28;
+    el.decoding = 'async';
+    el.addEventListener('load', function onLoad() {
+      el.removeEventListener('load', onLoad);
+      wrap.insertBefore(el, wrap.firstChild);
+      while (wrap.children.length > maxVisible) {
+        wrap.removeChild(wrap.lastChild);
+      }
+    }, { once: true });
+    el.src = url;
     el.addEventListener('animationend', function onEnd() {
       el.removeEventListener('animationend', onEnd);
       el.classList.remove('hero-av--join');
