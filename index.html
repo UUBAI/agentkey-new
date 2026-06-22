@@ -2844,7 +2844,6 @@ function whyNav(el) {
 }
 
 (function() {
-  var section = document.getElementById('why');
   var ids = ['feat-key','feat-payg','feat-fail','feat-scale'];
   var timer = null;
   window.whyCarouselIds = ids;
@@ -2856,23 +2855,23 @@ function whyNav(el) {
   }
 
   window.whyCarouselRestart = function() {
-    if (timer) clearInterval(timer);
-    timer = setInterval(next, 2000);
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function tickWhyCarousel() {
+      next();
+      timer = setTimeout(tickWhyCarousel, 2000);
+    }, 2000);
   };
 
   whySetActive(ids[0]);
   window.whyCarouselRestart();
-
-  if (section) {
-    section.addEventListener('mouseenter', function() {
-      if (timer) clearInterval(timer);
-    });
-    section.addEventListener('mouseleave', window.whyCarouselRestart);
-    section.addEventListener('focusin', function() {
-      if (timer) clearInterval(timer);
-    });
-    section.addEventListener('focusout', window.whyCarouselRestart);
-  }
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      if (timer) clearTimeout(timer);
+      timer = null;
+    } else {
+      window.whyCarouselRestart();
+    }
+  });
 })();
 
 // ── FEATURE ANIMATIONS ─────────────────────────────────────
