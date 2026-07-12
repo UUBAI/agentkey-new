@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 43.9998 42.6667" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="youtube" style="mix-blend-mode:plus-lighter" opacity="0.5" filter="url(#filter0_f_0_45)">
+<path id="play" d="M17.3332 16V26.6667L27.9998 21.3333L17.3332 16Z" fill="var(--fill-0, white)"/>
+</g>
+<defs>
+<filter id="filter0_f_0_45" x="-16" y="-16" width="74.6667" height="74.6667" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="8" result="effect1_foregroundBlur_0_45"/>
+</filter>
+</defs>
+</svg>
