@@ -1,0 +1,53 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="32" height="32" fill="#5A5A5A"/>
+<g id="Section 1">
+<path d="M-3488 -957C-3488 -958.104 -3487.1 -959 -3486 -959H1622C1623.1 -959 1624 -958.105 1624 -957V4775C1624 4776.1 1623.1 4777 1622 4777H-3486C-3487.1 4777 -3488 4776.1 -3488 4775V-957Z" fill="#444444"/>
+<path d="M-3486 -959V-958H1622V-959V-960H-3486V-959ZM1624 -957H1623V4775H1624H1625V-957H1624ZM1622 4777V4776H-3486V4777V4778H1622V4777ZM-3488 4775H-3487V-957H-3488H-3489V4775H-3488ZM-3486 4777V4776C-3486.55 4776 -3487 4775.55 -3487 4775H-3488H-3489C-3489 4776.66 -3487.66 4778 -3486 4778V4777ZM1624 4775H1623C1623 4775.55 1622.55 4776 1622 4776V4777V4778C1623.66 4778 1625 4776.66 1625 4775H1624ZM1622 -959V-958C1622.55 -958 1623 -957.552 1623 -957H1624H1625C1625 -958.657 1623.66 -960 1622 -960V-959ZM-3486 -959V-960C-3487.66 -960 -3489 -958.657 -3489 -957H-3488H-3487C-3487 -957.552 -3486.55 -958 -3486 -958V-959Z" fill="white" fill-opacity="0.1"/>
+<g id="1440w">
+<rect width="1440" height="5442" transform="translate(-158 -831)" fill="white"/>
+<g id="Container">
+<mask id="path-3-inside-1_0_1" fill="white">
+<path d="M-158 -210H1282V510H-158V-210Z"/>
+</mask>
+<path d="M-158 -210H1282V510H-158V-210Z" fill="#FAFAFA"/>
+<path d="M1282 510V509H-158V510V511H1282V510Z" fill="#E6E6E6" mask="url(#path-3-inside-1_0_1)"/>
+<g id="Frame 2147238601">
+<g id="Background">
+<rect x="-31.5" y="-31.5" width="585" height="212" rx="19.5" fill="white"/>
+<rect x="-31.5" y="-31.5" width="585" height="212" rx="19.5" stroke="#E6E6E6"/>
+<g id="magic-edit">
+<rect id="Rectangle 10496" x="21.3335" y="2.66669" width="5.33333" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10498" x="24" y="5.33331" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10499" x="21.3335" y="8" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10500" x="18.6665" y="10.6667" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10501" x="16" y="13.3333" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10502" x="13.3335" y="16" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10503" x="10.6665" y="18.6667" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10504" x="8" y="21.3333" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10505" x="5.3335" y="24" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10507" x="2.6665" y="21.3333" width="2.66667" height="5.33333" fill="#207480"/>
+<rect id="Rectangle 10508" x="5.3335" y="18.6667" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10509" x="8" y="16" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10510" x="10.6665" y="13.3333" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10511" x="13.3335" y="10.6667" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10512" x="16" y="8" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10513" x="18.6665" y="5.33331" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10514" x="18.6665" y="8" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10515" x="21.3335" y="5.33331" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10417" x="24" y="17.3333" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10419" x="23.9995" y="22.6666" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10421" x="21.333" y="20" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10422" x="26.6665" y="20" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10425" x="5.3335" y="2.66669" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10426" x="2.6665" y="5.33331" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10427" x="5.3335" y="8" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10428" x="8" y="5.33331" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10516" x="26.6665" y="13.3333" width="2.66667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 10517" x="10.6665" y="26.6667" width="2.66667" height="2.66667" fill="#207480"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

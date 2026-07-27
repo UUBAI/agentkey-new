@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Serper API for Claude Cowork | AgentKey</title>
+<meta name="description" content="Connect Claude Cowork to Serper data with AgentKey."/>
+<link rel="canonical" href="https://agentkey.app/integrations/serper/claude-cowork/"/>
+<link rel="icon" href="../../local-assets/site/favicon.ico" type="image/x-icon"/>
+<link rel="apple-touch-icon" sizes="180x180" href="../../local-assets/site/apple-touch-icon.png"/>
+<link rel="manifest" href="../../local-assets/site/manifest.json"/>
+<meta name="theme-color" content="#000000"/>
+<link href="../../local-assets/fonts/geist-local.css" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden;-webkit-tap-highlight-color:transparent;scroll-behavior:smooth}
+body{min-width:100%;font-family:"Geist",system-ui,sans-serif;color:#26202f;background:#fff;-webkit-font-smoothing:antialiased;font-synthesis:none;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select{font-family:inherit}
+button{border:0;background:none;cursor:pointer}
+img,svg{display:block;max-width:100%;height:auto}
+:root{--ink:#26202f;--muted:#6b7280;--line:#e6e6e6;--card-line:#d8dee8;--brand:#207480;--brand-hover:#1a6370;--surface:#fafafa;--paper:#fff}
+
+.rail{position:fixed;inset:0;z-index:999;display:flex;justify-content:center;padding:0 80px;pointer-events:none}
+.rail-inner{flex:1;max-width:1280px;border-left:1px solid rgba(0,0,0,.08);border-right:1px solid rgba(0,0,0,.08)}
+.page-wrap{max-width:1440px;margin:0 auto;padding-left:126px;padding-right:126px}
+
+.nav-outer{position:sticky;top:0;z-index:100;width:100%;background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.nav-inner{max-width:1440px;height:72px;margin:0 auto;padding:0 126px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;column-gap:24px}
+.nav-logo{justify-self:start;display:flex;align-items:center;gap:9px;color:var(--ink)}
+.nav-logo-name{font-weight:600;font-size:17px;line-height:22px;letter-spacing:-.03em}
+.nav-links{justify-self:center;display:flex;align-items:center;gap:32px}
+.nav-link{font-weight:500;font-size:14px;line-height:18px;color:var(--muted);transition:color .2s ease}
+.nav-link:hover,.nav-link.active{color:var(--brand)}
+.nav-link.active{font-weight:600}
+.nav-actions{justify-self:end;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.nav-lang-wrap{display:flex;align-items:center;flex-shrink:0}
+.nav-lang-select{max-width:160px;padding:8px 30px 8px 16px;font-size:14px;font-weight:600;line-height:18px;color:var(--muted);border:1px solid var(--line);border-radius:100px;appearance:none;-webkit-appearance:none;background-color:#fff;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;cursor:pointer}
+.nav-lang-select:hover{color:var(--brand);border-color:var(--brand)}
+.nav-cta{display:inline-flex;align-items:center;justify-content:center;padding:9px 22px;border-radius:100px;background:#1f7380;font-weight:600;font-size:14px;line-height:18px;color:#fff;transition:background .2s ease,transform .15s ease}
+.nav-cta:hover{background:var(--brand-hover);transform:scale(1.03)}
+
+.primary-button{display:inline-flex;align-items:center;justify-content:center;width:fit-content;min-height:38px;padding:10px 16px;border-radius:100px;background:var(--brand);font-size:13px;line-height:18px;font-weight:500;color:#fff;transition:background .2s ease}
+.primary-button:hover{background:var(--brand-hover)}
+.secondary-button{position:relative;display:flex;align-items:center;justify-content:center;width:fit-content;height:52px;border-radius:100px;gap:8px;background:#fff;border:1px solid rgba(0,0,0,.1);box-shadow:0 2px 12px rgba(0,0,0,.06);padding:5px 20px;font-size:14px;line-height:18px;font-weight:500;color:var(--ink);white-space:nowrap;cursor:pointer}
+.secondary-button:hover{color:var(--ink)}
+
+.source-hero{height:549px;background:#fff;border-bottom:1px solid var(--line);overflow:hidden}
+.source-hero-inner{position:relative;height:100%;max-width:1440px;margin:0 auto}
+.breadcrumb{position:absolute;left:126px;top:107px;width:328px;display:flex;align-items:center;flex-wrap:nowrap;min-width:0;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;font-size:16px;line-height:24px;font-weight:500;color:#9ca3af}.breadcrumb::-webkit-scrollbar{display:none}
+.breadcrumb a{color:#9ca3af;transition:color .18s ease;white-space:nowrap}
+.breadcrumb a:hover{color:var(--brand)}
+.breadcrumb-separator{flex:0 0 auto;margin:0 18px;color:#9ca3af}
+.breadcrumb a:first-child{flex:0 0 auto}.breadcrumb-link,.breadcrumb-current{flex:0 0 auto;min-width:0;overflow:visible;text-overflow:clip;white-space:nowrap}.breadcrumb-current{color:#26202f}
+.source-hero h1{position:absolute;left:126px;top:143px;width:570px;font-size:var(--hero-title-size,48px);line-height:var(--hero-title-line,53px);font-weight:600;letter-spacing:-1.44px;color:var(--ink)}
+.source-hero h1 span{display:block;white-space:var(--hero-title-space,nowrap)}
+.source-hero p{position:absolute;left:126px;top:var(--hero-copy-top,277px);width:536px;font-size:18px;line-height:30px;font-weight:400;letter-spacing:-.18px;color:var(--muted)}
+.hero-actions{position:absolute;left:126px;top:var(--hero-actions-top,396px);height:auto;display:flex;align-items:flex-start;gap:8px}
+.hero-actions .primary-button{width:151px;min-height:46px;padding:14px 32px;font-size:14px;font-weight:600}
+.hero-art{position:absolute;left:834px;top:111px;width:408px;height:408px}
+.hero-outer-frame{position:absolute;z-index:1;left:16.667%;top:10.294%;width:66.667%;height:66.667%;border-radius:22.059%;background:linear-gradient(135deg,rgba(197,246,255,.34),rgba(197,246,255,.2) 42%,rgba(186,236,245,.16));box-shadow:0 26px 100px -32px rgba(0,111,127,.6),0 38px 68px -50px rgba(0,111,127,.38),inset 0 1px 0 rgba(255,255,255,.72),inset 0 -34px 56px rgba(197,246,255,.18);overflow:hidden;animation:heroGlassBody 5.2s ease-in-out infinite alternate}
+.hero-outer-frame::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;background:conic-gradient(from var(--glass-angle,0deg),rgba(0,117,133,.04) 0deg,rgba(197,246,255,.78) 24deg,rgba(0,117,133,.34) 50deg,rgba(186,236,245,.22) 78deg,rgba(255,255,255,0) 130deg,rgba(32,116,128,.18) 194deg,rgba(197,246,255,.86) 238deg,rgba(186,236,245,0) 292deg,rgba(0,117,133,.04) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:heroGlassAngle 5.2s linear infinite}
+.hero-outer-frame::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse 86% 62% at var(--shine-x,32%) var(--shine-y,24%),rgba(197,246,255,.74),rgba(197,246,255,.42) 24%,rgba(0,117,133,.18) 48%,rgba(197,246,255,0) 72%),radial-gradient(ellipse 72% 52% at calc(100% - var(--shine-x,32%)) calc(100% - var(--shine-y,24%)),rgba(0,117,133,.22),rgba(186,236,245,.2) 36%,rgba(0,117,133,0) 70%);opacity:.96;animation:heroGlassCaustic 4.2s cubic-bezier(.45,0,.2,1) infinite alternate}
+.hero-outer-noise{position:absolute;z-index:2;left:16.667%;top:10.294%;width:66.667%;height:66.667%;border-radius:22.059%;pointer-events:none;background:radial-gradient(ellipse 62% 50% at 18% 16%,rgba(197,246,255,.58),rgba(197,246,255,.22) 34%,rgba(197,246,255,0) 66%),radial-gradient(ellipse 72% 48% at 82% 84%,rgba(0,117,133,.2),rgba(186,236,245,.16) 34%,rgba(0,117,133,0) 68%),linear-gradient(155deg,rgba(255,255,255,.28),rgba(197,246,255,0) 42%,rgba(0,117,133,.11) 100%);opacity:.9;animation:heroGlassBreath 3.6s ease-in-out infinite alternate}
+.hero-glass-ring{position:absolute;z-index:4;left:16.667%;top:10.294%;width:66.667%;height:66.667%;pointer-events:none;mix-blend-mode:screen;overflow:visible}
+.hero-glass-ring rect{fill:none;vector-effect:non-scaling-stroke}
+.hero-glass-ring .glass-base{stroke:rgba(0,117,133,.18);stroke-width:1.2}
+.hero-glass-ring .glass-sweep{stroke:rgba(255,255,255,.95);stroke-width:2.35;stroke-linecap:round;stroke-dasharray:124 948;filter:drop-shadow(0 0 8px rgba(35,189,208,.38));animation:heroGlassTrack 2.8s linear infinite}
+.hero-glass-ring .glass-sweep.accent{stroke:rgba(35,189,208,.62);stroke-width:2.25;stroke-dasharray:54 1018;stroke-dashoffset:-242;animation-duration:2.8s}
+.hero-source-logo{position:absolute;z-index:5;left:29.902%;top:23.529%;width:40.262%;height:40.262%;object-fit:contain;border-radius:24.35%}
+@property --glass-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+@property --shine-x{syntax:"<percentage>";inherits:false;initial-value:32%}
+@property --shine-y{syntax:"<percentage>";inherits:false;initial-value:24%}
+@keyframes heroGlassAngle{to{--glass-angle:360deg}}
+@keyframes heroGlassTrack{to{stroke-dashoffset:-1072}}
+@keyframes heroGlassBody{0%{filter:saturate(.98) brightness(.99)}100%{filter:saturate(1.24) brightness(1.06)}}
+@keyframes heroGlassCaustic{0%{--shine-x:14%;--shine-y:15%;opacity:.55;filter:saturate(.98) brightness(.98)}42%{--shine-x:48%;--shine-y:38%;opacity:1;filter:saturate(1.28) brightness(1.1)}100%{--shine-x:76%;--shine-y:22%;opacity:.68;filter:saturate(1.08) brightness(1.02)}}
+@keyframes heroGlassBreath{0%{opacity:.58;filter:saturate(.95) brightness(.99)}100%{opacity:1;filter:saturate(1.28) brightness(1.1)}}
+@media(prefers-reduced-motion:reduce){.hero-outer-frame,.hero-outer-frame::before,.hero-outer-frame::after,.hero-outer-noise,.hero-glass-ring .glass-sweep{animation:none}}
+
+.agent-section{height:1365px;background:#fafafa;border-bottom:1px solid var(--line)}
+.agent-section-inner{position:relative;height:100%;max-width:1440px;margin:0 auto}
+.agent-heading{position:absolute;left:362px;top:77px;width:716px;text-align:center}
+.agent-heading h2{margin:0 auto 20px;width:386px;font-size:40px;line-height:44px;font-weight:600;letter-spacing:-1.2px;color:var(--ink);white-space:nowrap}
+.agent-heading p{font-size:18px;line-height:28px;color:var(--muted);letter-spacing:-.18px}
+.agent-search-wrap{position:absolute;left:0;top:170px;width:100%;height:112px;padding:33px 0 35px;background:#fafafa;z-index:4}
+.agent-search-wrap.is-sticky{background:#fafafa}
+.agent-search{width:440px;height:44px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.search-box{height:44px;flex:1;display:flex;align-items:center;gap:11px;padding:0 17px;border:1px solid #e2e2df;border-radius:8px;background:#fff;transition:border-color .2s ease}
+.search-box:focus-within{border-color:var(--brand)}
+.search-box img{width:20px;height:20px}
+.search-box input{width:100%;border:0;outline:0;background:transparent;font-size:14px;line-height:17px;color:var(--ink)}
+.search-box input::placeholder{color:#a1a1aa}
+.agent-search button{height:44px;width:90px;border:1px solid #e2e2df;border-radius:8px;background:#fff;font-size:14px;line-height:21px;font-weight:600;color:#18181b}
+.agents-grid{position:absolute;left:126px;top:282px;width:1188px;display:grid;grid-template-columns:repeat(4,287.25px);gap:13px}
+.agent-card{height:152px;padding:21px;border:1px solid var(--card-line);border-radius:12px;background:#fff;overflow:hidden;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+.agent-card:hover{border-color:rgba(32,116,128,.38);box-shadow:0 14px 30px rgba(31,116,128,.08);transform:translateY(-1px)}
+.agent-icon{width:40px;height:40px;margin-bottom:12px;border-radius:9px;position:relative;overflow:hidden;background:#fff}
+.agent-icon img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;border-radius:inherit}
+.agent-copy{display:flex;flex-direction:column;gap:4px}
+.agent-copy h3{font-size:14px;line-height:18px;font-weight:600;color:#111827}
+.agent-copy p{height:36px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:12px;line-height:14px;font-weight:400;color:var(--muted)}
+.empty-state{position:absolute;left:126px;right:126px;top:282px;display:none;padding-top:60px;text-align:center;font-size:14px;line-height:20px;color:var(--muted)}
+
+.more{height:672px;background:#fafafa;border-bottom:1px solid var(--line)}
+.more-inner{position:relative;height:100%;max-width:1440px;margin:0 auto}
+.more h2{position:absolute;left:126px;top:96px;width:1188px;text-align:center;font-size:40px;line-height:44px;font-weight:600;letter-spacing:-1.2px;color:var(--ink)}
+.more-grid{position:absolute;left:126px;top:190.75px;width:1188px;display:grid;grid-template-columns:586px 586px;gap:16px;text-align:left}
+.more-card{height:auto;min-height:358px;padding:34px 41px 37px;border:1px solid var(--line);border-radius:20px;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start}
+.more-art{width:148px;height:116px;flex:0 0 auto;margin-bottom:26px}
+.more-art.provider-art{width:209px;height:135px;margin:-12px 0 19px -15px}
+.more-art img{width:100%;height:100%;object-fit:contain;max-width:none}
+.more-copy{margin-bottom:16px}
+.more-copy h3{font-size:20px;line-height:22px;font-weight:600;letter-spacing:-.34px;color:var(--ink);margin-bottom:8px}
+.more-copy p{font-size:14px;line-height:23.1px;letter-spacing:-.14px;color:var(--muted)}
+.more-card .primary-button{margin-top:auto;gap:8px}
+.more-card .primary-button img{width:16px;height:16px}
+
+.final-cta{height:auto;min-height:706.805px;padding:0 126px 96px;border-bottom:1px solid #33343d;background:#26202f;color:#fff;display:flex;align-items:center;justify-content:center}
+.cta-content{width:min(720px,100%);display:flex;flex-direction:column;align-items:center;padding:120px 80px;text-align:center}
+.cta-logo{width:86px;height:86px;margin:0 0 24px;border-radius:21px;background:#217580;display:grid;place-items:center}
+.cta-logo svg{width:38px;height:auto}
+.final-cta h2{width:100%;margin:0 0 16px;font-size:48px;line-height:105%;letter-spacing:-.03em;font-weight:500}
+.final-cta p{max-width:none;margin:0 0 40px;font-size:16px;line-height:165%;letter-spacing:-.01em;color:rgba(235,241,242,.55)}
+.final-cta .primary-button{min-height:50px;padding:16px 36px;font-size:15px;line-height:18px}
+.footer{width:100%;background:#26202f;padding-bottom:max(0px,env(safe-area-inset-bottom))}
+.footer-wrap{position:relative;max-width:1440px;display:flex;align-items:center;justify-content:space-between;margin:0 auto;padding:44px 126px}
+.footer-logo{display:flex;align-items:center;gap:9px}
+.footer-name{font-weight:600;font-size:14px;line-height:18px;letter-spacing:-.02em;color:#fff}
+.footer-copy{font-size:11px;line-height:14px;letter-spacing:.04em;color:#9ca3af}
+.footer-icons{display:flex;align-items:center;gap:8px}
+.footer-icon{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(235,241,242,.05);transition:background .15s ease}
+a.footer-icon:hover{background:rgba(235,241,242,.12)}
+a.footer-icon:hover svg path{stroke:#ebf1f2}
+.footer-badge{display:inline-flex;align-items:center;margin-left:4px;transition:opacity .15s ease}
+.footer-badge:hover{opacity:.85}
+.footer-badge img{display:block;width:auto;height:32px}
+.footer-links{position:absolute;left:499px;top:52px;display:flex;gap:28px}
+.footer-link{font-weight:500;font-size:12px;line-height:16px;letter-spacing:.04em;text-transform:uppercase;color:#9ca3af}
+a.footer-link:hover{color:#ebf1f2}
+
+.reveal-scale{opacity:0;transform:translateY(18px) scale(.7);filter:blur(4px);will-change:transform,opacity,filter}
+.reveal-visible.reveal-scale{opacity:1;transform:translateY(0) scale(1);filter:blur(0);animation:revealScaleSpring 980ms cubic-bezier(.16,1,.3,1) both}
+@keyframes revealScaleSpring{0%{opacity:0;transform:translateY(18px) scale(.7);filter:blur(4px)}55%{opacity:1;transform:translateY(-5px) scale(1.02);filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+
+@media(min-width:1051px) and (max-width:1408px){
+  .nav-inner,.page-wrap,.final-cta,.footer-wrap{padding-left:clamp(64px,8.8vw,126px);padding-right:clamp(64px,8.8vw,126px)}
+  .source-hero h1,.source-hero p,.breadcrumb,.hero-actions{left:clamp(64px,8.8vw,126px)}
+  .hero-art{left:auto;right:calc(clamp(118px,14vw,266px) - 68px)}
+  .agents-grid,.more-grid{left:clamp(64px,8.8vw,126px);width:calc(100% - clamp(64px,8.8vw,126px)*2)}
+  .agents-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .agent-heading{left:50%;transform:translateX(-50%)}
+  .more h2{left:clamp(64px,8.8vw,126px);width:calc(100% - clamp(64px,8.8vw,126px)*2)}
+  .more-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .footer-wrap{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:24px}
+  .footer-logo{grid-column:1;grid-row:1}
+  .footer-links{position:static;grid-column:2;grid-row:1;justify-self:center;justify-content:center;flex-wrap:nowrap;gap:clamp(18px,1.9vw,28px);min-width:0}
+  .footer-icons{grid-column:3;grid-row:1;justify-self:end}
+}
+@media(min-width:961px) and (max-width:1180px){
+  .source-hero{height:auto;min-height:712px}
+  .source-hero-inner{padding:0 126px 76px}
+  .breadcrumb{position:relative;left:auto;top:auto;width:auto;padding-top:62px}
+  .hero-art{position:relative;left:50%;right:auto;top:auto;width:260px;height:260px;margin:24px 0 30px;transform:translateX(-50%)}
+  .source-hero h1{position:relative;left:auto;top:auto;width:570px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center;font-size:42px;line-height:44px}
+  .source-hero p{position:relative;left:auto;top:auto;width:536px;max-width:100%;margin:20px auto 0;text-align:center;font-size:17px;line-height:28px}
+  .hero-actions{position:relative;left:auto;top:auto;justify-content:center;margin-top:30px}
+  .agent-heading{left:126px;width:calc(100% - 252px);transform:none}
+  .agent-search{width:calc(100% - 252px)}
+  .agents-grid{left:126px;width:calc(100% - 252px);grid-template-columns:repeat(3,minmax(0,1fr))}
+  .empty-state{left:126px;right:126px}
+  .agent-section{height:1690px}
+  .more h2{left:126px;width:calc(100% - 252px)}
+  .more-grid{left:126px;width:calc(100% - 252px);grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:769px) and (max-width:1050px){
+  .nav-inner{grid-template-columns:1fr auto;grid-template-rows:auto auto;height:auto;min-height:56px;padding:10px 126px;column-gap:12px;row-gap:10px}
+  .nav-logo{grid-column:1;grid-row:1}
+  .nav-actions{grid-column:2;grid-row:1}
+  .nav-links{grid-column:1/-1;grid-row:2;justify-self:stretch;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:18px;padding:2px 0 6px;scrollbar-width:thin;flex-wrap:nowrap}
+  .nav-links::-webkit-scrollbar{height:3px}
+  .nav-link{font-size:13px;white-space:nowrap;flex-shrink:0}
+  .nav-cta{padding:8px 14px;font-size:13px}
+  .footer-wrap{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:20px;padding:36px 126px}
+  .footer-links{position:static;justify-content:flex-start;gap:10px 22px;flex-wrap:wrap;width:auto}
+      .footer-icons{justify-content:flex-start}
+}
+@media(min-width:769px) and (max-width:960px){
+  .source-hero{height:auto;min-height:688px}
+  .source-hero-inner{padding:0 126px 72px}
+  .breadcrumb{position:relative;left:auto;top:auto;width:auto;padding-top:54px}
+  .hero-art{position:relative;left:50%;right:auto;top:auto;width:236px;height:236px;margin:24px 0 30px;transform:translateX(-50%)}
+  .source-hero h1{position:relative;left:auto;top:auto;width:100%;max-width:620px;margin-left:auto;margin-right:auto;text-align:center;font-size:38px;line-height:40px}
+  .source-hero p{position:relative;left:auto;top:auto;width:100%;max-width:520px;margin:20px auto 0;text-align:center;font-size:16px;line-height:27px}
+  .hero-actions{position:relative;left:auto;top:auto;justify-content:center;margin-top:30px}
+  .agent-section{height:2350px}
+  .agent-heading{left:126px;top:70px;width:calc(100% - 252px);transform:none}
+  .agent-heading h2{width:auto}
+  .agent-search{width:calc(100% - 252px)}
+  .agents-grid{left:126px;top:282px;width:calc(100% - 252px);grid-template-columns:repeat(2,minmax(0,1fr))}
+  .more{height:auto;min-height:1030px}
+  .more h2{left:126px;width:calc(100% - 252px)}
+  .more-grid{left:126px;width:calc(100% - 252px);grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .rail{display:none}
+  .nav-inner{grid-template-columns:1fr auto;grid-template-rows:auto auto;height:auto;min-height:56px;padding:10px 16px;column-gap:12px;row-gap:10px}
+  .nav-logo{grid-column:1;grid-row:1}
+  .nav-actions{grid-column:2;grid-row:1;gap:8px}
+  .nav-links{grid-column:1/-1;grid-row:2;justify-self:stretch;width:auto;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:18px;padding:2px 0 6px;scrollbar-width:thin;flex-wrap:nowrap}
+  .nav-links::-webkit-scrollbar{height:3px}
+  .nav-link{font-size:13px;white-space:nowrap;flex-shrink:0}
+  .nav-lang-select{height:34px;padding:7px 26px 7px 12px;font-size:13px}
+  .nav-cta{height:34px;min-height:34px;padding:0 14px;font-size:13px}
+  .page-wrap,.footer-wrap{padding-left:16px;padding-right:16px}
+  .source-hero{height:auto;min-height:632px}
+  .source-hero-inner{padding:0 16px 52px}
+  .breadcrumb{position:relative;left:auto;top:auto;width:auto;padding-top:48px;font-size:14px;line-height:22px}
+  .source-hero h1{position:relative;left:auto;top:auto;width:100%;max-width:620px;margin:16px auto 0;text-align:center;font-size:clamp(31px,8vw,38px);line-height:1.06;letter-spacing:-.9px}
+  .source-hero h1 span{display:block;white-space:normal}
+  .source-hero p{position:relative;left:auto;top:auto;width:100%;max-width:520px;margin:18px auto 0;text-align:center;font-size:15px;line-height:25px}
+  .hero-actions{position:relative;left:auto;top:auto;justify-content:center;margin-top:28px;height:auto;align-items:flex-start;flex-wrap:wrap}
+  .hero-art{position:relative;left:50%;top:auto;width:min(300px,74vw);height:min(300px,74vw);margin-top:18px;transform:translateX(-50%)}
+  .agent-section{height:auto;min-height:0}
+  .agent-section-inner{padding:70px 16px 76px}
+  .agent-heading{position:relative;left:auto;top:auto;width:100%;transform:none}
+  .agent-heading h2{width:auto;font-size:32px;line-height:38px;white-space:normal}
+  .agent-heading p{font-size:15px;line-height:24px}
+  .agent-search-wrap{position:relative;left:auto;top:auto;width:100%;height:auto;margin-top:18px;padding:16px 0 35px}
+  .agent-search{width:100%;height:auto}
+  .agents-grid{position:relative;left:auto;top:auto;width:100%;margin-top:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .agent-card{height:158px;padding:13px}
+  .agent-icon{width:34px;height:34px;margin-bottom:10px;border-radius:8px}
+  .agent-copy h3{font-size:13px;line-height:18px}
+  .agent-copy p{font-size:11px;line-height:13px}
+  .empty-state{position:relative;left:auto;right:auto;top:auto;padding:48px 0 0}
+  .more{height:auto}
+  .more-inner{padding:70px 16px 80px}
+  .more h2{position:relative;left:auto;top:auto;width:100%;font-size:32px;line-height:38px}
+  .more-grid{position:relative;left:auto;top:auto;width:100%;margin-top:42px;grid-template-columns:1fr;gap:16px}
+  .more-card{min-height:340px}
+  .final-cta{min-height:616px;padding:0 16px 48px}
+  .cta-content{width:100%;padding:56px 20px}
+  .final-cta h2{font-size:clamp(24px,7vw,32px);line-height:105%}
+  .final-cta p{margin-bottom:28px;font-size:14px}
+  .footer-wrap{flex-direction:column;align-items:flex-start;gap:20px;padding:32px 16px}
+  .footer-links{position:static;left:auto;top:auto;gap:10px 22px;flex-wrap:wrap}
+}
+@media(max-width:540px){
+  .source-hero{min-height:590px}
+  .source-hero-inner{padding-bottom:42px}
+  .source-hero h1{max-width:100%;font-size:var(--hero-mobile-title-size,27px);line-height:1.1}
+  .source-hero h1 span{white-space:nowrap}
+  .source-hero p{max-width:330px;font-size:14px;line-height:23px}
+  .hero-art{width:min(268px,70vw);height:min(268px,70vw);margin-top:16px}
+  .hero-actions .primary-button{padding-left:24px;padding-right:24px}
+  .agent-search{gap:8px}
+  .agent-search-wrap{margin-top:16px;padding:14px 0 32px}
+  .agent-search button{width:82px}
+  .agents-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .more-card{min-height:342px;padding:22px 28px 32px}
+  .more-art{transform:scale(.86);transform-origin:left top;margin-bottom:12px}
+  .more-art.provider-art{margin:-8px 0 8px -10px}
+  .more-copy h3{font-size:18px;white-space:normal}
+  .more-copy p{font-size:13px;line-height:21px}
+  .footer-wrap{padding:24px 16px}
+}
+@media(max-width:380px){
+  .source-hero{min-height:574px}
+  .source-hero h1{font-size:var(--hero-mobile-small-title-size,var(--hero-mobile-title-size,22px));line-height:1.1}
+  .agents-grid{grid-template-columns:1fr}
+  .agent-card{height:152px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+  .reveal-scale{opacity:1;transform:none;filter:none}
+  .reveal-visible.reveal-scale{animation:none!important}
+}
+
+
+/* Source + agent detail page */
+.source-agent-page{--agent-accent:#D97757;--agent-bg:#D87858}
+.source-agent-page .breadcrumb{top:89px;width:min(720px,calc(100% - 252px));font-size:14px;line-height:23.1px}
+.source-agent-page .source-hero h1{top:125px;width:562px;line-height:1.1;letter-spacing:-2.28px}
+.source-agent-page .source-hero h1.hero-title-split+p{top:253px}
+.source-agent-page .source-hero h1.hero-title-split~.hero-actions{top:432px}
+.source-agent-page .source-hero p{top:206px;width:562px;line-height:29.7px}
+.source-agent-page .hero-actions{top:414px}
+.source-agent-page .hero-actions .primary-button{width:145px}
+/* Source-agent breadcrumb nowrap */
+@media(max-width:1180px){.source-agent-page .breadcrumb{width:100%;max-width:100%;overflow-x:auto}.source-agent-page .breadcrumb-separator{margin:0 12px}.source-agent-page .breadcrumb-link,.source-agent-page .breadcrumb-current{flex:0 0 auto;overflow:visible;text-overflow:clip;white-space:nowrap}}
+@media(max-width:768px){.source-agent-page .breadcrumb{width:100%;max-width:100%;overflow-x:auto}.source-agent-page .breadcrumb-separator{margin:0 8px}}
+/* End source-agent breadcrumb nowrap */
+.pair-hero-art{--pair-node-size:184px;--pair-line-width:48.5px;position:absolute;left:831px;top:182.5px;width:calc(var(--pair-node-size)*2 + var(--pair-line-width));height:var(--pair-node-size);display:grid;grid-template-columns:var(--pair-node-size) var(--pair-line-width) var(--pair-node-size);align-items:center}
+.pair-node,.agent-node{position:relative;width:var(--pair-node-size);height:var(--pair-node-size)}
+.pair-node{overflow:hidden;border-radius:calc(var(--pair-node-size)*.225)}
+.pair-node .hero-outer-frame,.pair-node .hero-outer-noise{left:0;top:0;width:100%;height:100%;border-radius:calc(var(--pair-node-size)*.225)}
+.pair-node .hero-glass-ring{left:0;top:0;width:100%;height:100%}
+.pair-node .hero-source-logo{left:19.85%;top:19.85%;width:60.3%;height:60.3%;border-radius:calc(var(--pair-node-size)*.114)}
+.pair-line{position:relative;width:var(--pair-line-width);height:3px;background:rgba(38,32,47,.18);z-index:0;overflow:hidden;border-radius:0}
+.pair-line::after{content:"";position:absolute;left:0;top:0;width:16px;height:3px;background:var(--agent-accent);border-radius:0;transform:translateX(-18px);animation:dataPulseToAgent .82s linear infinite}
+@keyframes dataPulseToAgent{to{transform:translateX(calc(var(--pair-line-width) + 16px))}}
+.agent-hero-logo{position:absolute;left:calc(var(--pair-node-size)*-0.1261);top:calc(var(--pair-node-size)*-0.07174);width:calc(var(--pair-node-size)*1.25217);height:calc(var(--pair-node-size)*1.25217);max-width:none;object-fit:fill}
+.agent-hero-frame{position:absolute;inset:0;display:grid;place-items:center;border:0;border-radius:calc(var(--pair-node-size)*.225);background:var(--agent-bg,#fff);box-shadow:0 0 0 3px var(--agent-ring,var(--agent-accent)),0 10px 23px rgba(0,0,0,.15);overflow:hidden}
+.agent-hero-icon{position:absolute;left:50%;top:50%;width:var(--agent-icon-size,100%);height:var(--agent-icon-size,100%);transform:translate(-50%,-50%);object-fit:var(--agent-fit,cover);border-radius:calc(var(--pair-node-size)*.225)}
+.codex-logo-frame{position:absolute;inset:19.85%;border-radius:calc(var(--pair-node-size)*.114);background:#dbe3ff;display:grid;place-items:center;box-shadow:0 26px 90px -34px rgba(75,103,241,.42),inset 0 1px 0 rgba(255,255,255,.86);overflow:hidden}
+.codex-logo-frame img{width:100%;height:100%;object-fit:cover}
+.detail-section{background:#fafafa;border-bottom:1px solid var(--line)}
+.detail-inner{max-width:1440px;margin:0 auto;padding-left:126px;padding-right:126px}
+.why-detail{height:720px}
+.why-detail .detail-inner{padding-top:84px}
+.section-title{font-size:40px;line-height:44px;font-weight:600;letter-spacing:-1.2px;color:var(--ink)}
+.why-detail .section-title{text-align:left;margin-bottom:50px}
+.why-grid{display:grid;grid-template-columns:repeat(2,minmax(0,586px));gap:16px}
+.why-card{height:213px;border:1px solid var(--line);border-radius:20px;background:#fff;padding:32px;display:flex;flex-direction:column;align-items:flex-start}
+.why-card-icon{width:32px;height:32px;margin-bottom:16px}
+.why-card h3{font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.48px;color:var(--ink);margin-bottom:8px}
+.why-card p{font-size:14px;line-height:23px;color:var(--muted);letter-spacing:-.14px;max-width:522px}
+.use-detail{height:558px;background:#fafafa}
+.use-detail .detail-inner{height:100%;padding-top:84px;display:grid;grid-template-columns:316px 1fr;column-gap:50px}
+.use-left h2{font-size:40px;line-height:44px;font-weight:600;letter-spacing:-1.2px;color:var(--ink);margin-bottom:24px}
+.mini-flow{position:relative;margin-top:0;width:135px;height:52.06px}
+.mini-flow-source{position:absolute;left:83.08px;top:0;width:51.923px;height:51.923px;border:2px solid var(--agent-accent);border-radius:10.873px;background:#fff;display:grid;place-items:center;overflow:hidden}
+.mini-flow-source-logo{width:30.288px;height:30.288px;object-fit:contain;border-radius:6.41px}
+.mini-flow-line{position:absolute;left:51.35px;top:25.03px;width:32.904px;height:2px;background:var(--agent-accent,#a0a4ff);border-radius:999px}
+.mini-flow-agent{position:absolute;left:0;top:.14px;width:51.923px;height:51.923px;display:grid;place-items:center;overflow:visible}
+.mini-flow-agent-bg{display:none}
+.mini-flow-agent-logo{position:static;width:51.923px;height:51.923px;object-fit:contain;border-radius:10.873px}
+.use-grid{display:grid;grid-template-columns:repeat(2,minmax(0,403px));gap:16px;align-content:start}
+.use-item{height:114px;border:1px solid rgba(0,0,0,0);border-radius:8px;background:#f0f2f4;padding:17px 21px 25px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.use-icon{width:24px;height:24px;object-fit:contain}
+.use-item p{font-size:16px;line-height:20px;font-weight:500;color:var(--muted);letter-spacing:0}
+.prompt-detail{height:721px;background:#fff;border-bottom:1px solid var(--line)}
+.prompt-detail .detail-inner{width:min(1024px,calc(100% - 32px));max-width:1024px;padding:66px 0 0}
+.prompt-detail .section-title{font-size:32px;line-height:44px;font-weight:600;letter-spacing:-1.2px;color:var(--ink);white-space:nowrap}
+.prompt-card{width:100%;height:480px;margin:33px auto 0;border:1px solid rgba(0,0,0,.08);border-radius:20px;background:#26202f;color:#fff;overflow:hidden;box-shadow:0 71px 24px -60px rgba(0,0,0,.06),0 28px 25px -11px rgba(0,0,0,.06)}
+.prompt-titlebar{height:42px;border-bottom:1px solid rgba(0,0,0,.07);background:#2c2733;display:flex;align-items:center;padding:0 20px;font-family:"Geist Mono",SFMono-Regular,Consolas,monospace;font-size:16px;line-height:20px;font-weight:500;color:#bbc1cc}
+.prompt-list{position:relative;height:438px}
+.prompt-block{position:absolute;left:44px;right:46px;min-height:110px}
+.prompt-block:nth-child(1){top:22px}
+.prompt-block:nth-child(2){top:155.19px}
+.prompt-block:nth-child(3){top:289.19px}
+.prompt-block:not(:last-child)::after{content:"";position:absolute;left:2px;right:0;bottom:.81px;height:1px;background:#4b4a49;border-radius:999px}
+.prompt-label{display:inline-flex;height:30px;align-items:center;margin-left:1px;padding:1px 13px;border:1px solid #525252;border-radius:8px;font-size:12px;line-height:22.5px;font-weight:500;text-transform:uppercase;color:#969696;margin-bottom:17.59px}
+.prompt-row{position:relative;height:24px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding-right:104px;color:#f6f9ff;font-family:"Geist Mono",SFMono-Regular,Consolas,monospace;font-size:16px;line-height:20px}
+.prompt-row span{min-width:0}
+.copy-btn{position:absolute;right:0;top:0;width:24px;height:24px;border-radius:6px;display:grid;place-items:center;color:#d8d5df;flex:0 0 auto;transition:background .18s ease,color .18s ease}
+.copy-btn img{width:24px;height:24px;max-width:none}
+.copy-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.copy-btn.is-copied{right:0;width:86px;display:inline-flex;align-items:center;justify-content:center;gap:6px;color:#08be89;background:rgba(8,190,137,.08);font-family:"Geist Mono",SFMono-Regular,Consolas,monospace;font-size:12px;line-height:16px;font-weight:500}
+.copy-btn.is-copied svg{width:14px;height:14px;flex:0 0 auto}
+.copy-btn.is-copied:hover{color:#08be89;background:rgba(8,190,137,.08)}
+.other-agents{height:auto;min-height:648px;background:#fafafa}
+.other-agents .detail-inner{padding-top:66px;padding-bottom:90px}
+.other-agents .section-title,.other-sources .section-title{font-size:32px;line-height:44px;letter-spacing:-1.2px}
+.detail-subcopy{margin-top:16px;max-width:620px;font-size:18px;line-height:28px;font-weight:400;letter-spacing:-.01em;color:var(--muted);text-wrap:pretty}
+.agent-link-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 20px;margin-top:38px}
+.link-card{height:152px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:21px;display:flex;flex-direction:column;color:inherit;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+.link-card:hover{border-color:rgba(32,116,128,.36);box-shadow:0 14px 30px rgba(31,116,128,.08);transform:translateY(-1px)}
+.link-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.link-card-logo{width:40px;height:40px;border-radius:9px;object-fit:cover;overflow:hidden}
+.link-arrow{width:28px;height:28px;color:#9ca3af;transition:transform .18s ease,color .18s ease}
+.link-card:hover .link-arrow{transform:translate(2px,-2px);color:var(--brand)}
+.link-card h3{font-size:14px;line-height:18px;font-weight:600;color:#111827;margin-bottom:4px}
+.link-card p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:18px;color:var(--muted)}
+.other-sources{height:auto;min-height:630px;background:#fff}
+.other-sources .detail-inner{padding-top:66px;padding-bottom:96px}
+.source-link-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:38px}
+.source-mini-card{height:152px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:21px;display:flex;flex-direction:column;color:inherit;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+.source-mini-card:hover{border-color:rgba(32,116,128,.36);box-shadow:0 14px 30px rgba(31,116,128,.08);transform:translateY(-1px)}
+.source-mini-card img{width:40px;height:40px;border-radius:9px;object-fit:cover;margin-bottom:12px;overflow:hidden}
+.source-mini-card h3{font-size:14px;line-height:18px;font-weight:600;color:#111827;margin-bottom:4px}
+.source-mini-card p{height:36px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:12px;line-height:18px;color:var(--muted)}
+.faq-detail{height:auto;min-height:861px;background:#faf9f6;border-bottom:1px solid var(--line);overflow:hidden}
+.faq-detail .detail-inner{height:860px;padding-top:80px;padding-bottom:0}
+.faq-head{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.faq-pill{height:30px;display:flex;align-items:center;width:fit-content;overflow:hidden;padding:0 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;line-height:22.5px;font-weight:500;text-transform:uppercase;color:var(--ink)}
+.faq-head h2{width:498px;margin-bottom:64px;font-size:40px;line-height:110%;font-weight:600;letter-spacing:-.03em;color:var(--ink)}
+.faq-list{width:100%;display:flex;flex-direction:column}
+.faq-item{padding:24px 0;border-top:1px solid rgba(0,0,0,.08);cursor:pointer}
+.faq-item:last-child{border-bottom:1px solid rgba(0,0,0,.08)}
+.faq-question{width:100%;min-height:0;padding:0;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;text-align:left;font-size:16px;line-height:140%;font-weight:600;color:var(--ink);cursor:pointer}
+.faq-icon{flex:0 0 auto;margin-top:2px;font-size:20px;line-height:24px;color:#9ca3af;font-weight:400;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.faq-answer{display:block;max-height:0;margin-top:0;padding:0;overflow:hidden;opacity:0;font-size:15px;line-height:170%;color:var(--muted);text-align:justify;text-justify:inter-word;transition:max-height .5s cubic-bezier(.16,1,.3,1),opacity .35s ease,margin-top .35s ease}
+.faq-item.open .faq-answer{max-height:300px;margin-top:12px;opacity:1}
+.faq-item.open .faq-icon{transform:none}
+@media(min-width:1051px) and (max-width:1408px){
+  .pair-hero-art{left:auto;right:clamp(64px,8.8vw,126px);transform:scale(.92);transform-origin:right center}
+  .detail-inner{padding-left:clamp(64px,8.8vw,126px);padding-right:clamp(64px,8.8vw,126px)}
+  .why-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:961px) and (max-width:1180px){
+  .source-agent-page .source-hero{min-height:720px}
+  .source-agent-page .pair-hero-art{--pair-node-size:138px;--pair-line-width:36px;position:relative;left:auto;right:auto;top:auto;width:calc(var(--pair-node-size)*2 + var(--pair-line-width));height:var(--pair-node-size);margin:42px auto 44px;transform:none}
+  .why-detail{height:auto}.why-detail .detail-inner{padding-top:74px;padding-bottom:82px}
+  .use-detail{height:auto}.use-detail .detail-inner{padding-top:74px;padding-bottom:82px;grid-template-columns:1fr;row-gap:42px}.use-left{max-width:520px}.use-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .prompt-detail{height:auto}.prompt-detail .detail-inner{padding-top:64px;padding-bottom:82px}
+  .agent-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.other-agents{height:auto}.other-agents .detail-inner{padding-bottom:92px}
+  .source-link-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.other-sources{height:auto}.other-sources .detail-inner{padding-bottom:84px}
+}
+@media(min-width:769px) and (max-width:960px){
+  .source-agent-page .source-hero{min-height:688px}.source-agent-page .pair-hero-art{--pair-node-size:126px;--pair-line-width:32px;position:relative;left:auto;right:auto;top:auto;width:calc(var(--pair-node-size)*2 + var(--pair-line-width));height:var(--pair-node-size);margin:38px auto 40px;transform:none}
+  .detail-inner{padding-left:126px;padding-right:126px}.why-detail,.use-detail,.prompt-detail,.other-agents,.other-sources{height:auto}.why-detail .detail-inner,.use-detail .detail-inner,.prompt-detail .detail-inner,.other-agents .detail-inner,.other-sources .detail-inner{padding-top:64px;padding-bottom:76px}
+  .why-detail .section-title,.use-left h2{font-size:34px;line-height:40px;letter-spacing:-.9px}
+  .other-agents .section-title,.other-sources .section-title{font-size:32px;line-height:40px;letter-spacing:-.9px}
+  .why-card h3{font-size:21px;line-height:28px;letter-spacing:-.42px}
+  .why-grid,.use-grid,.agent-link-grid{grid-template-columns:1fr}.why-card{height:auto;min-height:190px}.use-detail .detail-inner{display:block}.use-left{margin-bottom:36px}.source-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.prompt-card{height:auto}.prompt-list{height:auto;padding:22px 44px 38px}.prompt-block{position:relative;left:auto;right:auto;top:auto;min-height:0;padding-bottom:35px;margin-bottom:23px}.prompt-block:not(:last-child)::after{left:0;right:0;bottom:0}.prompt-row{height:auto;align-items:flex-start}.faq-detail .detail-inner{padding-left:126px;padding-right:126px}
+}
+@media(max-width:768px){
+  .source-agent-page .source-hero{min-height:650px}.source-agent-page .source-hero h1{font-size:clamp(34px,9vw,42px);line-height:1.08}.source-agent-page .source-hero h1.hero-title-split{font-size:clamp(30px,8vw,40px)}.source-agent-page .source-hero h1.hero-title-split{font-size:clamp(30px,8vw,40px)}.source-agent-page .source-hero p{max-width:560px}.source-agent-page .hero-actions .primary-button{width:auto}.source-agent-page .pair-hero-art{--pair-node-size:min(124px,31vw);--pair-line-width:min(32px,8vw);position:relative;left:auto;right:auto;top:auto;width:calc(var(--pair-node-size)*2 + var(--pair-line-width));height:var(--pair-node-size);margin:34px auto 38px;transform:none}
+  .detail-inner{padding-left:16px;padding-right:16px}.detail-section{height:auto;min-height:0}.why-detail .detail-inner,.use-detail .detail-inner,.prompt-detail .detail-inner,.other-agents .detail-inner,.other-sources .detail-inner{padding-top:58px;padding-bottom:66px}.section-title,.use-left h2,.faq-head h2{font-size:32px;line-height:38px;letter-spacing:-.7px}.prompt-detail .section-title{font-size:32px;line-height:38px;letter-spacing:-.7px}.why-detail .section-title{margin-bottom:34px}.why-grid,.use-grid,.agent-link-grid,.source-link-grid{grid-template-columns:1fr;gap:12px}.why-card{height:auto;min-height:190px;padding:24px}.use-detail .detail-inner{display:block}.use-left{margin-bottom:32px}.use-item{height:auto;min-height:104px}.prompt-card{height:auto;margin-top:26px;border-radius:16px}.prompt-titlebar{font-size:14px}.prompt-list{height:auto;padding:20px}.prompt-block{position:relative;left:auto;right:auto;top:auto;min-height:0;padding-bottom:26px;margin-bottom:20px}.prompt-block:not(:last-child)::after{left:0;right:0;bottom:0}.prompt-label{font-size:11px;margin-bottom:14px}.prompt-row{height:auto;font-size:12px;line-height:18px;align-items:flex-start}.other-agents .section-title,.other-sources .section-title{text-align:left}.detail-subcopy{font-size:15px;line-height:24px}.agent-link-grid,.source-link-grid{margin-top:30px}.faq-detail .detail-inner{padding-top:64px;padding-bottom:78px}.faq-head{margin-bottom:48px}.faq-question{font-size:15px;line-height:21px}.faq-answer{font-size:14px;line-height:23px}
+  .why-detail .section-title,.use-left h2,.prompt-detail .section-title,.other-agents .section-title,.other-sources .section-title{font-size:30px;line-height:36px;letter-spacing:-.75px}
+  .why-card h3{font-size:19px;line-height:26px;letter-spacing:-.38px}
+  .faq-detail{height:auto;min-height:0}.faq-detail .detail-inner{height:auto;min-height:0;padding:48px 16px}.faq-head{margin-bottom:0}.faq-head h2{width:auto;max-width:100%;margin-bottom:32px;padding:0 4px;font-size:26px;line-height:110%;letter-spacing:-.03em}.faq-question{font-size:15px;line-height:140%}.faq-answer{font-size:15px;line-height:170%}
+}
+@media(max-width:540px){.source-agent-page .source-hero{min-height:616px}.source-agent-page .source-hero h1{font-size:31px}.source-agent-page .source-hero h1.hero-title-split{font-size:clamp(22px,6.8vw,31px)}.source-agent-page .source-hero h1.hero-title-split{font-size:clamp(22px,6.8vw,31px)}.source-agent-page .pair-hero-art{--pair-node-size:min(112px,30vw);--pair-line-width:min(28px,7.5vw);width:calc(var(--pair-node-size)*2 + var(--pair-line-width));height:var(--pair-node-size);margin-top:32px;margin-bottom:36px}.why-detail .section-title,.use-left h2,.prompt-detail .section-title,.other-agents .section-title,.other-sources .section-title{font-size:28px;line-height:34px;letter-spacing:-.7px}.detail-subcopy{font-size:14px;line-height:23px}.why-card h3{font-size:18px;line-height:25px;letter-spacing:-.36px}.hero-actions{gap:10px}.prompt-row{word-break:break-word}.source-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.source-mini-card{height:158px;padding:14px}.source-mini-card p{font-size:11px;line-height:15px}.link-card{padding:16px}}
+@media(max-width:480px){.faq-head h2{font-size:22px}.faq-question{font-size:14px}}
+@media(max-width:1180px){
+  .source-agent-page .breadcrumb,
+  .source-agent-page .source-hero h1,
+  .source-agent-page .source-hero p,
+  .source-agent-page .hero-actions{top:auto}
+  .source-agent-page .source-hero h1.hero-title-split+p,
+  .source-agent-page .source-hero h1.hero-title-split~.hero-actions{top:auto}
+  .source-agent-page .source-hero h1{width:min(562px,100%)}
+  .source-agent-page .source-hero p{width:min(562px,100%)}
+}
+@media(min-width:769px) and (max-width:820px){
+  .source-agent-page .source-hero h1,
+  .source-agent-page .source-hero p{max-width:calc(100vw - 252px)}
+}
+@media(min-width:961px) and (max-width:1180px){
+  .prompt-detail .detail-inner{width:auto;max-width:none;margin:0 126px;padding-left:0;padding-right:0}
+}
+@media(min-width:769px) and (max-width:960px){
+  .prompt-detail .detail-inner{width:auto;max-width:none;margin:0 126px;padding-left:0;padding-right:0}
+}
+@media(max-width:960px){
+  .prompt-card{width:100%;height:auto}
+  .prompt-list{height:auto;display:flex;flex-direction:column;padding:22px clamp(18px,4.6vw,44px) 34px}
+  .prompt-block,
+  .prompt-block:nth-child(1),
+  .prompt-block:nth-child(2),
+  .prompt-block:nth-child(3){position:relative;left:auto;right:auto;top:auto;min-height:0;margin:0 0 24px;padding:0 0 28px}
+  .prompt-block:last-child{margin-bottom:0;padding-bottom:0}
+  .prompt-block:not(:last-child)::after{left:0;right:0;bottom:0}
+  .prompt-row{height:auto;min-height:24px;align-items:flex-start}
+  .prompt-row span{flex:1;min-width:0;white-space:normal;overflow-wrap:break-word;word-break:normal}
+}
+@media(max-width:768px){
+  .prompt-detail{height:auto}
+  .prompt-detail .detail-inner{width:100%;max-width:none;margin:0;padding:58px 16px 50px}
+  .prompt-card{margin-top:26px;border-radius:16px}
+  .prompt-list{padding:20px 20px 28px}
+  .prompt-block,
+  .prompt-block:nth-child(1),
+  .prompt-block:nth-child(2),
+  .prompt-block:nth-child(3){margin-bottom:22px;padding-bottom:26px}
+  .prompt-block:last-child{margin-bottom:0;padding-bottom:0}
+  .prompt-row{gap:18px;padding-right:36px;font-size:12px;line-height:18px}
+  .copy-btn.is-copied{width:24px;font-size:0;gap:0;background:rgba(8,190,137,.08)}
+  .copy-btn.is-copied span{display:none}
+}
+@media(max-width:420px){
+  .prompt-detail .section-title{font-size:28px;line-height:34px}
+  .prompt-detail .detail-inner{padding-bottom:44px}
+  .prompt-list{padding:18px 14px 24px}
+  .prompt-titlebar{height:40px;padding:0 16px}
+  .prompt-row{gap:12px;font-size:11px;line-height:17px}
+  .copy-btn{margin-top:-2px}
+}
+
+</style>
+</head>
+<body>
+<div class="rail"><div class="rail-inner"></div></div>
+
+<nav class="nav-outer" id="nav">
+  <div class="nav-inner">
+    <a href="../../../renew/" class="nav-logo">
+      <svg width="22" viewBox="0 0 291 417" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+        <path d="M198.977 166.759L198.974 166.761L290.492 219.6V280.422L172.637 212.378V331.984H223.199V383.009H172.637V416.977H119.963V212.379L0.245 281.499L0 281.074V220.816L93.625 166.761L93.624 166.76L146.302 136.347L198.977 166.759Z" fill="#26202F"/>
+        <path d="M119.963 121.145V121.14L132.302 128.264L79.624 158.677L0 112.706V52.449L0.245 52.025L119.963 121.145Z" fill="#26202F"/>
+        <path d="M290.492 113.924L212.977 158.676L160.301 128.264L172.637 121.142V121.145L290.492 53.102V113.924Z" fill="#26202F"/>
+        <path d="M172.637 104.977L146.302 120.182L119.963 104.975V28.069L172.637 0V104.977Z" fill="#26202F"/>
+      </svg>
+      <span class="nav-logo-name">AgentKey</span>
+    </a>
+    <div class="nav-links">
+      <a href="../../../renew/" class="nav-link">Overview</a>
+      <a href="../../../renew/#integrations" class="nav-link">Services</a>
+      <a href="../../../renew/#why" class="nav-link">Capabilities</a>
+      <a href="#" class="nav-link" onclick="event.preventDefault()">Pricing</a>
+      <a href="../../index.html" class="nav-link active">Intergrations</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-lang-wrap">
+        <select class="nav-lang-select" aria-label="Language">
+          <option>English</option>
+          <option>中文</option>
+          <option>日本語</option>
+          <option>한국어</option>
+          <option>Deutsch</option>
+          <option>Français</option>
+          <option>Español</option>
+        </select>
+      </div>
+      <a href="https://console.agentkey.app/" class="nav-cta" target="_blank" rel="noopener noreferrer">Login</a>
+    </div>
+  </div>
+</nav>
+
+<main class="source-agent-page">
+  <section class="source-hero">
+    <div class="source-hero-inner">
+      <div class="breadcrumb"><a href="../../index.html#sources">All sources</a><span class="breadcrumb-separator" aria-hidden="true">/</span><a href="../index.html" class="breadcrumb-link">Serper</a><span class="breadcrumb-separator" aria-hidden="true">/</span><span class="breadcrumb-current">Claude Cowork</span></div>
+      <div class="pair-hero-art" aria-hidden="true">
+        <div class="pair-node">
+          <div class="hero-outer-frame"></div><div class="hero-outer-noise"></div>
+          <svg class="hero-glass-ring" viewBox="0 0 272 272" aria-hidden="true"><rect class="glass-base" x="1" y="1" width="270" height="270" rx="59"/><rect class="glass-sweep" x="1" y="1" width="270" height="270" rx="59"/><rect class="glass-sweep accent" x="1" y="1" width="270" height="270" rx="59"/></svg>
+          <img class="hero-source-logo" src="../../local-assets/source-detail/source-logos/serper.svg" alt="Serper logo"/>
+        </div>
+        <div class="pair-line"></div>
+        <div class="agent-node">
+          <div class="agent-hero-frame"><img class="agent-hero-icon" src="../../local-assets/source-detail/agent-hero-icons/claude.svg" alt="Claude Cowork logo"/></div>
+        </div>
+      </div>
+      <h1 class="hero-title-split"><span>Serper API for</span><span>Claude Cowork</span></h1>
+      <p>Connect Claude Cowork to Serper live data with AgentKey. Fetch fresh results through one API key, with access and response handling built for agent workflows.</p>
+      <div class="hero-actions"><a class="primary-button" href="https://console.agentkey.app/" target="_blank" rel="noopener noreferrer">Get Started</a><a class="secondary-button" href="https://docs.agentkey.app" target="_blank" rel="noopener noreferrer">View Docs</a></div>
+    </div>
+  </section>
+
+  <section class="detail-section why-detail">
+    <div class="detail-inner">
+      <h2 class="section-title">Why use AgentKey for Serper and Claude Cowork?</h2>
+      <div class="why-grid">
+        <article class="why-card reveal-scale"><img class="why-card-icon" src="../../local-assets/source-agent-detail/icons/magic-edit.svg" alt=""/><h3>One API for live data</h3><p>Connect Claude Cowork to Serper, web search, social data, finance, scraping, e-commerce, and business sources through one consistent interface.</p></article>
+        <article class="why-card reveal-scale"><img class="why-card-icon" src="../../local-assets/source-agent-detail/icons/robot.svg" alt=""/><h3>Built for AI agents</h3><p>AgentKey tools are purpose-built for workflows where Claude Cowork needs to fetch, compare, summarize, and reason over live external data.</p></article>
+        <article class="why-card reveal-scale"><img class="why-card-icon" src="../../local-assets/source-agent-detail/icons/zap.svg" alt=""/><h3>Less integration work</h3><p>Skip separate Serper provider setup, authentication flows, response parsing, and tool schema definitions for every agent workflow.</p></article>
+        <article class="why-card reveal-scale"><img class="why-card-icon" src="../../local-assets/source-agent-detail/icons/blocks.svg" alt=""/><h3>Structured results</h3><p>AgentKey returns cleaner, normalized Serper data that Claude Cowork can summarize, group, filter, compare, and reuse inside tasks.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="detail-section use-detail">
+    <div class="detail-inner">
+      <div class="use-left">
+        <h2>What you can do with Serper in Claude Cowork</h2>
+        <div class="mini-flow" aria-hidden="true">
+          <span class="mini-flow-line"></span>
+          <span class="mini-flow-source"><img class="mini-flow-source-logo" src="../../local-assets/source-detail/source-logos/serper.svg" alt="Serper logo"/></span>
+          <span class="mini-flow-agent">
+            <img class="mini-flow-agent-bg" src="../../local-assets/source-agent-detail/use-section/agent-frame.svg" alt=""/>
+            <img class="mini-flow-agent-logo" src="../../local-assets/source-detail/agent-card-icons/claude.png" alt="Claude Cowork logo"/>
+          </span>
+        </div>
+      </div>
+      <div class="use-grid">
+        <article class="use-item reveal-scale"><img class="use-icon" src="../../local-assets/source-agent-detail/use-section/use-icon-search.svg" alt=""/><p>Search the live web through Serper from inside your agent workflow.</p></article>
+        <article class="use-item reveal-scale"><img class="use-icon" src="../../local-assets/source-agent-detail/use-section/use-icon-summary.svg" alt=""/><p>Ground answers with source context, citations, and current web results.</p></article>
+        <article class="use-item reveal-scale"><img class="use-icon" src="../../local-assets/source-agent-detail/use-section/use-icon-monitor.svg" alt=""/><p>Track competitors, products, market narratives, and breaking topics.</p></article>
+        <article class="use-item reveal-scale"><img class="use-icon" src="../../local-assets/source-agent-detail/use-section/use-icon-combine.svg" alt=""/><p>Combine search results with social, finance, scraping, and business data.</p></article>
+        <article class="use-item reveal-scale"><img class="use-icon" src="../../local-assets/source-agent-detail/use-section/use-icon-trend.svg" alt=""/><p>Summarize result clusters into themes, entities, and next steps.</p></article>
+        <article class="use-item reveal-scale"><img class="use-icon" src="../../local-assets/source-agent-detail/use-section/use-icon-task.svg" alt=""/><p>Turn live web findings into briefs, reports, tickets, and research tasks.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="prompt-detail">
+    <div class="detail-inner">
+      <h2 class="section-title">Example prompts</h2>
+      <div class="prompt-card reveal-scale">
+        <div class="prompt-titlebar">Claude Cowork</div>
+        <div class="prompt-list">
+          <div class="prompt-block"><span class="prompt-label">prompt 1</span><div class="prompt-row"><span>"Search Serper for recent results about AgentKey competitors and summarize the key positioning patterns."</span><button class="copy-btn" type="button" aria-label="Copy prompt"><img src="../../local-assets/source-agent-detail/icons/copy.svg" alt=""/></button></div></div>
+          <div class="prompt-block"><span class="prompt-label">prompt 2</span><div class="prompt-row"><span>"Use Serper to find current discussions about MCP data tools and group the results by user intent."</span><button class="copy-btn" type="button" aria-label="Copy prompt"><img src="../../local-assets/source-agent-detail/icons/copy.svg" alt=""/></button></div></div>
+          <div class="prompt-block"><span class="prompt-label">prompt 3</span><div class="prompt-row"><span>"Research the latest news about AI agent infrastructure with Serper and list the strongest signals."</span><button class="copy-btn" type="button" aria-label="Copy prompt"><img src="../../local-assets/source-agent-detail/icons/copy.svg" alt=""/></button></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="detail-section other-agents">
+    <div class="detail-inner"><h2 class="section-title">Build this Serper integration with other agents</h2><p class="detail-subcopy">Use the same Serper data workflow across Claude, Cursor, OpenCode, and more.</p><div class="agent-link-grid" id="other-agents-grid"></div></div>
+  </section>
+
+  <section class="detail-section other-sources">
+    <div class="detail-inner"><h2 class="section-title">Explore other AgentKey data sources</h2><p class="detail-subcopy">Explore more live data sources for search, social, finance, business, scraping, and commerce workflows.</p><div class="source-link-grid" id="other-sources-grid"></div></div>
+  </section>
+
+  <section class="faq-detail">
+    <div class="detail-inner">
+      <div class="faq-head"><div class="faq-pill">FAQ</div><h2>Frequently asked questions</h2></div>
+      <div class="faq-list" id="faq-list"></div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="cta-content">
+      <div class="cta-logo" aria-hidden="true"><svg width="38" viewBox="0 0 291 417" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M198.977 166.759L198.974 166.761L290.492 219.6V280.422L172.637 212.378V331.984H223.199V383.009H172.637V416.977H119.963V212.379L0.245 281.499L0 281.074V220.816L93.625 166.761L93.624 166.76L146.302 136.347L198.977 166.759Z" fill="#fff"/><path d="M119.963 121.145V121.14L132.302 128.264L79.624 158.677L0 112.706V52.449L0.245 52.025L119.963 121.145Z" fill="#fff"/><path d="M290.492 113.924L212.977 158.676L160.301 128.264L172.637 121.142V121.145L290.492 53.102V113.924Z" fill="#fff"/><path d="M172.637 104.977L146.302 120.182L119.963 104.975V28.069L172.637 0V104.977Z" fill="#fff"/></svg></div>
+      <h2>AgentKey is live.<br/>Plug your agent in.</h2><p>One key for search, scrape, social and crypto APIs. One subscription — that’s it.</p><a class="primary-button" href="https://console.agentkey.app/" target="_blank" rel="noopener">Try it for free</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-wrap">
+    <div class="footer-logo">
+      <svg width="20" viewBox="0 0 291 417" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+        <path d="M198.977 166.759L198.974 166.761L290.492 219.6V280.422L172.637 212.378V331.984H223.199V383.009H172.637V416.977H119.963V212.379L0.245 281.499L0 281.074V220.816L93.625 166.761L93.624 166.76L146.302 136.347L198.977 166.759Z" fill="#fff"/>
+        <path d="M119.963 121.145V121.14L132.302 128.264L79.624 158.677L0 112.706V52.449L0.245 52.025L119.963 121.145Z" fill="#fff"/>
+        <path d="M290.492 113.924L212.977 158.676L160.301 128.264L172.637 121.142V121.145L290.492 53.102V113.924Z" fill="#fff"/>
+        <path d="M172.637 104.977L146.302 120.182L119.963 104.975V28.069L172.637 0V104.977Z" fill="#fff"/>
+      </svg>
+      <div>
+        <div class="footer-name">AgentKey</div>
+        <div class="footer-copy">© 2026 AgentKey</div>
+      </div>
+    </div>
+    <div class="footer-icons">
+      <a href="https://github.com/chainbase-labs/AgentKey" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="footer-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="https://x.com/agentkeyapp" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="footer-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="https://fazier.com/launches/agentkey.app" target="_blank" rel="noopener noreferrer" class="footer-badge" aria-label="Fazier launch badge">
+        <img src="../../local-assets/footer/fazier-launch-badge.svg" width="120" alt="Fazier badge"/>
+      </a>
+      <a href="https://aiagentsdirectory.com" target="_blank" rel="noopener" title="Discover AI Agents Directory" class="footer-badge">
+        <img src="../../local-assets/footer/ai-agents-directory-badge.svg" alt="Featured on AI Agents Directory" width="200" height="50"/>
+      </a>
+    </div>
+    <div class="footer-links">
+      <a href="https://docs.agentkey.app" target="_blank" rel="noopener" class="footer-link">Docs</a>
+      <a href="/privacy.html" class="footer-link">Privacy</a>
+      <a href="/terms.html" class="footer-link">Terms</a>
+      <a href="mailto:support@agentkey.app" class="footer-link">Support</a>
+      <a href="https://console.agentkey.app/store" target="_blank" rel="noopener noreferrer" class="footer-link">Status</a>
+      <a href="#" class="footer-link">About</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const otherAgents=[
+  {name:"Claude code",desc:"Anthropic's terminal agent for editing, testing, and understanding codebases.",logo:"../../local-assets/source-detail/agent-card-icons/claude.png",href:"../claude-code/index.html"},
+  {name:"Codex",desc:"OpenAI's coding agent for editing, running, and understanding software projects.",logo:"../../local-assets/source-detail/agent-card-icons/codex.png",href:"../codex/index.html"},
+  {name:"ChatGPT",desc:"OpenAI's versatile assistant for writing, coding, research, and daily tasks.",logo:"../../local-assets/source-detail/agent-card-icons/chatgpt.png",href:"../chatgpt/index.html"},
+  {name:"Cursor",desc:"An AI code editor built for fast, context-aware software development.",logo:"../../local-assets/source-detail/agent-card-icons/cursor.png",href:"../cursor/index.html"},
+  {name:"OpenCode",desc:"A terminal coding agent that understands natural language project requests.",logo:"../../local-assets/source-detail/agent-card-icons/opencode.png",href:"../opencode/index.html"},
+  {name:"Windsurf",desc:"An AI development environment that helps developers build software collaboratively.",logo:"../../local-assets/source-detail/agent-card-icons/windsurf.png",href:"../windsurf/index.html"}
+];
+const otherSources=[
+  {name:"Brave Search",desc:"Privacy-focused independent search index with no tracking or user profiling.",logo:"../../local-assets/source-detail/source-logos/brave-search.svg",href:"../../brave-search/index.html"},
+  {name:"Firecrawl",desc:"Crawl websites and extract structured data with schema-aware parsing.",logo:"../../local-assets/source-detail/source-logos/firecrawl.svg",href:"../../firecrawl/index.html"},
+  {name:"Reddit",desc:"Posts, threads, and full comment trees across any subreddit. Real-time access to one of the web's largest public discussion archives.",logo:"../../local-assets/source-detail/source-logos/reddit.svg",href:"../../reddit/index.html"},
+  {name:"YouTube",desc:"Videos, channels, comments, and multi-language transcripts. Ideal for long-form content research, creator analysis, and video-based answers.",logo:"../../local-assets/source-detail/source-logos/youtube.svg",href:"../../youtube/index.html"},
+  {name:"Perplexity",desc:"LLM-generated answers with inline web citations and grounded source context.",logo:"../../local-assets/source-detail/source-logos/perplexity.svg",href:"../../perplexity/index.html"},
+  {name:"Market Data",desc:"Quotes, market caps, and token price data across crypto markets.",logo:"../../local-assets/source-detail/source-logos/market-data.svg",href:"../../market-data/index.html"},
+  {name:"Alpha Vantage",desc:"Equities, FX, crypto, and technical indicators with intraday and historical OHLC, fundamentals, and built-in studies.",logo:"../../local-assets/source-detail/source-logos/alpha-vantage.png",href:"../../alpha-vantage/index.html"},
+  {name:"Crunchbase",desc:"Company, funding, founder, and investor intelligence.",logo:"../../local-assets/source-detail/source-logos/crunchbase.svg",href:"../../crunchbase/index.html"},
+  {name:"Amazon",desc:"Best sellers, category rankings, product details, and top reviews from Amazon's global marketplace.",logo:"../../local-assets/source-detail/source-logos/amazon.svg",href:"../../amazon/index.html"},
+  {name:"Tavily",desc:"AI-optimized search engine delivering real-time web results with semantic understanding.",logo:"../../logos/search/tavily-mark.svg",href:"../../tavily/index.html"}
+];
+const faqs=[
+  {q:"Can Claude Cowork access Serper data directly?",a:"No, Claude Cowork needs an integration layer like AgentKey to provide authenticated, structured, and rate-limited access to Serper data in a format optimized for AI agents."},
+  {q:"What can I use Serper data for?",a:"Serper is useful for live research, monitoring, comparison, summarization, and workflows where an agent needs current external context instead of static model knowledge."},
+  {q:"Is AgentKey the same as the official Serper API?",a:"AgentKey provides a simplified, agent-optimized interface across multiple data providers. It handles connection details, access control, and response normalization so your agent can focus on the workflow."},
+  {q:"Can I use the same setup with other data sources?",a:"Yes. Once AgentKey is connected to Claude Cowork, you can combine Serper with search, scraping, social, finance, e-commerce, and business sources through the same integration pattern."},
+  {q:"Does every workflow need human approval?",a:"Research and retrieval workflows can often be automated, but workflows that write data, publish content, or trigger external actions should include a human approval step."}
+];
+function arrowSvg(){return '<svg class="link-arrow" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 18L18 10M12 10H18V16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>'}
+function alignActiveNav(){
+  const links=document.querySelector(".nav-links");
+  const active=links?.querySelector(".nav-link.active");
+  if(!links||!active||links.scrollWidth<=links.clientWidth)return;
+  const target=active.offsetLeft+active.offsetWidth-links.clientWidth;
+  links.scrollLeft=Math.max(0,Math.min(target,links.scrollWidth-links.clientWidth));
+}
+document.getElementById('other-agents-grid').innerHTML=otherAgents.map(item=>`<a class="link-card reveal-scale" href="${item.href}"><div class="link-card-head"><img class="link-card-logo" src="${item.logo}" alt="${item.name} logo"/>${arrowSvg()}</div><h3>${item.name}</h3><p>${item.desc}</p></a>`).join('');
+document.getElementById('other-sources-grid').innerHTML=otherSources.map(item=>`<a class="source-mini-card reveal-scale" href="${item.href}"><img src="${item.logo}" alt="${item.name} logo"/><h3>${item.name}</h3><p>${item.desc}</p></a>`).join('');
+document.getElementById('faq-list').innerHTML=faqs.map((item,index)=>`<article class="faq-item ${index===0?'open':''}"><button class="faq-question" type="button"><span>${item.q}</span><span class="faq-icon" aria-hidden="true">${index===0?'−':'+'}</span></button><div class="faq-answer">${item.a}</div></article>`).join('');
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    const wasOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(entry=>{
+      entry.classList.remove('open');
+      entry.querySelector('.faq-icon').textContent='+';
+    });
+    if(!wasOpen){
+      item.classList.add('open');
+      item.querySelector('.faq-icon').textContent='−';
+    }
+  });
+});
+async function copyPromptText(text){
+  if(navigator.clipboard?.writeText){
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const field=document.createElement("textarea");
+  field.value=text;
+  field.setAttribute("readonly","");
+  field.style.position="fixed";
+  field.style.opacity="0";
+  document.body.appendChild(field);
+  field.select();
+  const copied=document.execCommand("copy");
+  field.remove();
+  if(!copied)throw new Error("Copy failed");
+}
+document.querySelectorAll(".copy-btn").forEach(button=>{
+  const iconMarkup=button.innerHTML;
+  let resetTimer;
+  button.addEventListener("click",async()=>{
+    const rawText=button.parentElement.querySelector("span").textContent.trim();
+    const promptText=rawText.replace(/^["“”]+|["“”]+$/g,"");
+    try{
+      await copyPromptText(promptText);
+      clearTimeout(resetTimer);
+      button.classList.add("is-copied");
+      button.setAttribute("aria-label","Copied");
+      button.innerHTML='<svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11.667 3.5L5.25 9.917 2.333 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>COPIED!</span>';
+      resetTimer=setTimeout(()=>{
+        button.classList.remove("is-copied");
+        button.setAttribute("aria-label","Copy prompt");
+        button.innerHTML=iconMarkup;
+      },1200);
+    }catch(error){
+      console.warn("Unable to copy prompt",error);
+    }
+  });
+});
+function setupCardReveal(){const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;const targets=[...document.querySelectorAll('.reveal-scale')];targets.forEach((el,i)=>{el.classList.remove('reveal-visible');el.style.animationDelay=`${Math.min(i,12)*40}ms`});if(reduced){targets.forEach(el=>el.classList.add('reveal-visible'));return;}const observer=new IntersectionObserver((entries,obs)=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;entry.target.classList.add('reveal-visible');obs.unobserve(entry.target);});},{root:null,rootMargin:'0px 0px 18% 0px',threshold:.06});targets.forEach(el=>observer.observe(el));}
+setupCardReveal();
+window.addEventListener("load",alignActiveNav);
+window.addEventListener("resize",alignActiveNav);
+alignActiveNav();
+</script>
+</body>
+</html>

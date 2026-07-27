@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Taobao Integration | AgentKey</title>
+<meta name="description" content="Connect Taobao data to AI agents with AgentKey."/>
+<link rel="canonical" href="https://agentkey.app/integrations/taobao/"/>
+<link rel="icon" href="../local-assets/site/favicon.ico" type="image/x-icon"/>
+<link rel="apple-touch-icon" sizes="180x180" href="../local-assets/site/apple-touch-icon.png"/>
+<link rel="manifest" href="../local-assets/site/manifest.json"/>
+<meta name="theme-color" content="#000000"/>
+<link href="../local-assets/fonts/geist-local.css" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden;-webkit-tap-highlight-color:transparent;scroll-behavior:smooth}
+body{min-width:100%;font-family:"Geist",system-ui,sans-serif;color:#26202f;background:#fff;-webkit-font-smoothing:antialiased;font-synthesis:none;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select{font-family:inherit}
+button{border:0;background:none;cursor:pointer}
+img,svg{display:block;max-width:100%;height:auto}
+:root{--ink:#26202f;--muted:#6b7280;--line:#e6e6e6;--card-line:#d8dee8;--brand:#207480;--brand-hover:#1a6370;--surface:#fafafa;--paper:#fff}
+
+.rail{position:fixed;inset:0;z-index:999;display:flex;justify-content:center;padding:0 80px;pointer-events:none}
+.rail-inner{flex:1;max-width:1280px;border-left:1px solid rgba(0,0,0,.08);border-right:1px solid rgba(0,0,0,.08)}
+.page-wrap{max-width:1440px;margin:0 auto;padding-left:126px;padding-right:126px}
+
+.nav-outer{position:sticky;top:0;z-index:100;width:100%;background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.nav-inner{max-width:1440px;height:72px;margin:0 auto;padding:0 126px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;column-gap:24px}
+.nav-logo{justify-self:start;display:flex;align-items:center;gap:9px;color:var(--ink)}
+.nav-logo-name{font-weight:600;font-size:17px;line-height:22px;letter-spacing:-.03em}
+.nav-links{justify-self:center;display:flex;align-items:center;gap:32px}
+.nav-link{font-weight:500;font-size:14px;line-height:18px;color:var(--muted);transition:color .2s ease}
+.nav-link:hover,.nav-link.active{color:var(--brand)}
+.nav-link.active{font-weight:600}
+.nav-actions{justify-self:end;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.nav-lang-wrap{display:flex;align-items:center;flex-shrink:0}
+.nav-lang-select{max-width:160px;padding:8px 30px 8px 16px;font-size:14px;font-weight:600;line-height:18px;color:var(--muted);border:1px solid var(--line);border-radius:100px;appearance:none;-webkit-appearance:none;background-color:#fff;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;cursor:pointer}
+.nav-lang-select:hover{color:var(--brand);border-color:var(--brand)}
+.nav-cta{display:inline-flex;align-items:center;justify-content:center;padding:9px 22px;border-radius:100px;background:#1f7380;font-weight:600;font-size:14px;line-height:18px;color:#fff;transition:background .2s ease,transform .15s ease}
+.nav-cta:hover{background:var(--brand-hover);transform:scale(1.03)}
+
+.primary-button{display:inline-flex;align-items:center;justify-content:center;width:fit-content;min-height:38px;padding:10px 16px;border-radius:100px;background:var(--brand);font-size:13px;line-height:18px;font-weight:500;color:#fff;transition:background .2s ease}
+.primary-button:hover{background:var(--brand-hover)}
+.secondary-button{position:relative;display:flex;align-items:center;justify-content:center;width:fit-content;height:52px;border-radius:100px;gap:8px;background:#fff;border:1px solid rgba(0,0,0,.1);box-shadow:0 2px 12px rgba(0,0,0,.06);padding:5px 20px;font-size:14px;line-height:18px;font-weight:500;color:var(--ink);white-space:nowrap;cursor:pointer}
+.secondary-button:hover{color:var(--ink)}
+
+.source-hero{height:549px;background:#fff;border-bottom:1px solid var(--line);overflow:hidden}
+.source-hero-inner{position:relative;height:100%;max-width:1440px;margin:0 auto}
+.breadcrumb{position:absolute;left:126px;top:107px;width:328px;display:flex;align-items:center;font-size:16px;line-height:24px;font-weight:500;color:#9ca3af}
+.breadcrumb a{color:#9ca3af;transition:color .18s ease}
+.breadcrumb a:hover{color:var(--brand)}
+.breadcrumb-separator{margin:0 18px;color:#9ca3af}
+.breadcrumb-current{color:#26202f}
+.source-hero h1{position:absolute;left:126px;top:143px;width:570px;font-size:var(--hero-title-size,48px);line-height:var(--hero-title-line,53px);font-weight:600;letter-spacing:-1.44px;color:var(--ink)}
+.source-hero h1 span{display:block;white-space:var(--hero-title-space,nowrap)}
+.source-hero p{position:absolute;left:126px;top:var(--hero-copy-top,277px);width:536px;font-size:18px;line-height:30px;font-weight:400;letter-spacing:-.18px;color:var(--muted)}
+.hero-actions{position:absolute;left:126px;top:var(--hero-actions-top,396px);height:auto;display:flex;align-items:flex-start;gap:8px}
+.hero-actions .primary-button{width:151px;min-height:46px;padding:14px 32px;font-size:14px;font-weight:600}
+.hero-art{position:absolute;left:834px;top:111px;width:408px;height:408px}
+.hero-outer-frame{position:absolute;z-index:1;left:16.667%;top:10.294%;width:66.667%;height:66.667%;border-radius:22.059%;background:linear-gradient(135deg,rgba(197,246,255,.34),rgba(197,246,255,.2) 42%,rgba(186,236,245,.16));box-shadow:0 26px 100px -32px rgba(0,111,127,.6),0 38px 68px -50px rgba(0,111,127,.38),inset 0 1px 0 rgba(255,255,255,.72),inset 0 -34px 56px rgba(197,246,255,.18);overflow:hidden;animation:heroGlassBody 5.2s ease-in-out infinite alternate}
+.hero-outer-frame::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;background:conic-gradient(from var(--glass-angle,0deg),rgba(0,117,133,.04) 0deg,rgba(197,246,255,.78) 24deg,rgba(0,117,133,.34) 50deg,rgba(186,236,245,.22) 78deg,rgba(255,255,255,0) 130deg,rgba(32,116,128,.18) 194deg,rgba(197,246,255,.86) 238deg,rgba(186,236,245,0) 292deg,rgba(0,117,133,.04) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:heroGlassAngle 5.2s linear infinite}
+.hero-outer-frame::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse 86% 62% at var(--shine-x,32%) var(--shine-y,24%),rgba(197,246,255,.74),rgba(197,246,255,.42) 24%,rgba(0,117,133,.18) 48%,rgba(197,246,255,0) 72%),radial-gradient(ellipse 72% 52% at calc(100% - var(--shine-x,32%)) calc(100% - var(--shine-y,24%)),rgba(0,117,133,.22),rgba(186,236,245,.2) 36%,rgba(0,117,133,0) 70%);opacity:.96;animation:heroGlassCaustic 4.2s cubic-bezier(.45,0,.2,1) infinite alternate}
+.hero-outer-noise{position:absolute;z-index:2;left:16.667%;top:10.294%;width:66.667%;height:66.667%;border-radius:22.059%;pointer-events:none;background:radial-gradient(ellipse 62% 50% at 18% 16%,rgba(197,246,255,.58),rgba(197,246,255,.22) 34%,rgba(197,246,255,0) 66%),radial-gradient(ellipse 72% 48% at 82% 84%,rgba(0,117,133,.2),rgba(186,236,245,.16) 34%,rgba(0,117,133,0) 68%),linear-gradient(155deg,rgba(255,255,255,.28),rgba(197,246,255,0) 42%,rgba(0,117,133,.11) 100%);opacity:.9;animation:heroGlassBreath 3.6s ease-in-out infinite alternate}
+.hero-glass-ring{position:absolute;z-index:4;left:16.667%;top:10.294%;width:66.667%;height:66.667%;pointer-events:none;mix-blend-mode:screen;overflow:visible}
+.hero-glass-ring rect{fill:none;vector-effect:non-scaling-stroke}
+.hero-glass-ring .glass-base{stroke:rgba(0,117,133,.18);stroke-width:1.2}
+.hero-glass-ring .glass-sweep{stroke:rgba(255,255,255,.95);stroke-width:2.35;stroke-linecap:round;stroke-dasharray:124 948;filter:drop-shadow(0 0 8px rgba(35,189,208,.38));animation:heroGlassTrack 2.8s linear infinite}
+.hero-glass-ring .glass-sweep.accent{stroke:rgba(35,189,208,.62);stroke-width:2.25;stroke-dasharray:54 1018;stroke-dashoffset:-242;animation-duration:2.8s}
+.hero-source-logo{position:absolute;z-index:5;left:29.902%;top:23.529%;width:40.262%;height:40.262%;object-fit:contain;border-radius:24.35%}
+@property --glass-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+@property --shine-x{syntax:"<percentage>";inherits:false;initial-value:32%}
+@property --shine-y{syntax:"<percentage>";inherits:false;initial-value:24%}
+@keyframes heroGlassAngle{to{--glass-angle:360deg}}
+@keyframes heroGlassTrack{to{stroke-dashoffset:-1072}}
+@keyframes heroGlassBody{0%{filter:saturate(.98) brightness(.99)}100%{filter:saturate(1.24) brightness(1.06)}}
+@keyframes heroGlassCaustic{0%{--shine-x:14%;--shine-y:15%;opacity:.55;filter:saturate(.98) brightness(.98)}42%{--shine-x:48%;--shine-y:38%;opacity:1;filter:saturate(1.28) brightness(1.1)}100%{--shine-x:76%;--shine-y:22%;opacity:.68;filter:saturate(1.08) brightness(1.02)}}
+@keyframes heroGlassBreath{0%{opacity:.58;filter:saturate(.95) brightness(.99)}100%{opacity:1;filter:saturate(1.28) brightness(1.1)}}
+@media(prefers-reduced-motion:reduce){.hero-outer-frame,.hero-outer-frame::before,.hero-outer-frame::after,.hero-outer-noise,.hero-glass-ring .glass-sweep{animation:none}}
+
+.agent-section{height:1365px;background:#fafafa;border-bottom:1px solid var(--line)}
+.agent-section-inner{position:relative;height:100%;max-width:1440px;margin:0 auto}
+.agent-heading{position:absolute;left:362px;top:77px;width:716px;text-align:center}
+.agent-heading h2{margin:0 auto 20px;width:386px;font-size:40px;line-height:44px;font-weight:600;letter-spacing:-1.2px;color:var(--ink);white-space:nowrap}
+.agent-heading p{font-size:18px;line-height:28px;color:var(--muted);letter-spacing:-.18px}
+.agent-search-wrap{position:absolute;left:0;top:170px;width:100%;height:112px;padding:33px 0 35px;background:#fafafa;z-index:4}
+.agent-search-wrap.is-sticky{background:#fafafa}
+.agent-search{width:440px;height:44px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.search-box{height:44px;flex:1;display:flex;align-items:center;gap:11px;padding:0 17px;border:1px solid #e2e2df;border-radius:8px;background:#fff;transition:border-color .2s ease}
+.search-box:focus-within{border-color:var(--brand)}
+.search-box img{width:20px;height:20px}
+.search-box input{width:100%;border:0;outline:0;background:transparent;font-size:14px;line-height:17px;color:var(--ink)}
+.search-box input::placeholder{color:#a1a1aa}
+.agent-search button{height:44px;width:90px;border:1px solid #e2e2df;border-radius:8px;background:#fff;font-size:14px;line-height:21px;font-weight:600;color:#18181b}
+.agents-grid{position:absolute;left:126px;top:282px;width:1188px;display:grid;grid-template-columns:repeat(4,287.25px);gap:13px}
+.agent-card{display:block;height:152px;padding:21px;border:1px solid var(--card-line);border-radius:12px;background:#fff;overflow:hidden;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+.agent-card:hover{border-color:rgba(32,116,128,.38);box-shadow:0 14px 30px rgba(31,116,128,.08);transform:translateY(-1px)}
+.agent-icon{width:40px;height:40px;margin-bottom:12px;border-radius:9px;position:relative;overflow:hidden;background:#fff}
+.agent-icon img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;border-radius:inherit}
+.agent-copy{display:flex;flex-direction:column;gap:4px}
+.agent-copy h3{font-size:14px;line-height:18px;font-weight:600;color:#111827}
+.agent-copy p{height:36px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:12px;line-height:14px;font-weight:400;color:var(--muted)}
+.empty-state{position:absolute;left:126px;right:126px;top:282px;display:none;padding-top:60px;text-align:center;font-size:14px;line-height:20px;color:var(--muted)}
+
+.more{height:672px;background:#fafafa;border-bottom:1px solid var(--line)}
+.more-inner{position:relative;height:100%;max-width:1440px;margin:0 auto}
+.more h2{position:absolute;left:126px;top:96px;width:1188px;text-align:center;font-size:40px;line-height:44px;font-weight:600;letter-spacing:-1.2px;color:var(--ink)}
+.more-grid{position:absolute;left:126px;top:190.75px;width:1188px;display:grid;grid-template-columns:586px 586px;gap:16px;text-align:left}
+.more-card{height:auto;min-height:358px;padding:34px 41px 37px;border:1px solid var(--line);border-radius:20px;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start}
+.more-art{width:148px;height:116px;flex:0 0 auto;margin-bottom:26px}
+.more-art.provider-art{width:209px;height:135px;margin:-12px 0 19px -15px}
+.more-art img{width:100%;height:100%;object-fit:contain;max-width:none}
+.more-copy{margin-bottom:16px}
+.more-copy h3{font-size:20px;line-height:22px;font-weight:600;letter-spacing:-.34px;color:var(--ink);margin-bottom:8px}
+.more-copy p{font-size:14px;line-height:23.1px;letter-spacing:-.14px;color:var(--muted)}
+.more-card .primary-button{margin-top:auto;gap:8px}
+.more-card .primary-button img{width:16px;height:16px}
+
+.final-cta{height:auto;min-height:706.805px;padding:0 126px 96px;border-bottom:1px solid #33343d;background:#26202f;color:#fff;display:flex;align-items:center;justify-content:center}
+.cta-content{width:min(720px,100%);display:flex;flex-direction:column;align-items:center;padding:120px 80px;text-align:center}
+.cta-logo{width:86px;height:86px;margin:0 0 24px;border-radius:21px;background:#217580;display:grid;place-items:center}
+.cta-logo svg{width:38px;height:auto}
+.final-cta h2{width:100%;margin:0 0 16px;font-size:48px;line-height:105%;letter-spacing:-.03em;font-weight:500}
+.final-cta p{max-width:none;margin:0 0 40px;font-size:16px;line-height:165%;letter-spacing:-.01em;color:rgba(235,241,242,.55)}
+.final-cta .primary-button{min-height:50px;padding:16px 36px;font-size:15px;line-height:18px}
+.footer{width:100%;background:#26202f;padding-bottom:max(0px,env(safe-area-inset-bottom))}
+.footer-wrap{position:relative;max-width:1440px;display:flex;align-items:center;justify-content:space-between;margin:0 auto;padding:44px 126px}
+.footer-logo{display:flex;align-items:center;gap:9px}
+.footer-name{font-weight:600;font-size:14px;line-height:18px;letter-spacing:-.02em;color:#fff}
+.footer-copy{font-size:11px;line-height:14px;letter-spacing:.04em;color:#9ca3af}
+.footer-icons{display:flex;align-items:center;gap:8px}
+.footer-icon{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(235,241,242,.05);transition:background .15s ease}
+a.footer-icon:hover{background:rgba(235,241,242,.12)}
+a.footer-icon:hover svg path{stroke:#ebf1f2}
+.footer-badge{display:inline-flex;align-items:center;margin-left:4px;transition:opacity .15s ease}
+.footer-badge:hover{opacity:.85}
+.footer-badge img{display:block;width:auto;height:32px}
+.footer-links{position:absolute;left:499px;top:52px;display:flex;gap:28px}
+.footer-link{font-weight:500;font-size:12px;line-height:16px;letter-spacing:.04em;text-transform:uppercase;color:#9ca3af}
+a.footer-link:hover{color:#ebf1f2}
+
+.reveal-scale{opacity:0;transform:translateY(18px) scale(.7);filter:blur(4px);will-change:transform,opacity,filter}
+.reveal-visible.reveal-scale{opacity:1;transform:translateY(0) scale(1);filter:blur(0);animation:revealScaleSpring 980ms cubic-bezier(.16,1,.3,1) both}
+@keyframes revealScaleSpring{0%{opacity:0;transform:translateY(18px) scale(.7);filter:blur(4px)}55%{opacity:1;transform:translateY(-5px) scale(1.02);filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+
+@media(min-width:1051px) and (max-width:1408px){
+  .nav-inner,.page-wrap,.final-cta,.footer-wrap{padding-left:clamp(64px,8.8vw,126px);padding-right:clamp(64px,8.8vw,126px)}
+  .source-hero h1,.source-hero p,.breadcrumb,.hero-actions{left:clamp(64px,8.8vw,126px)}
+  .hero-art{left:auto;right:calc(clamp(118px,14vw,266px) - 68px)}
+  .agents-grid,.more-grid{left:clamp(64px,8.8vw,126px);width:calc(100% - clamp(64px,8.8vw,126px)*2)}
+  .agents-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .agent-heading{left:50%;transform:translateX(-50%)}
+  .more h2{left:clamp(64px,8.8vw,126px);width:calc(100% - clamp(64px,8.8vw,126px)*2)}
+  .more-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .footer-wrap{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:24px}
+  .footer-logo{grid-column:1;grid-row:1}
+  .footer-links{position:static;grid-column:2;grid-row:1;justify-self:center;justify-content:center;flex-wrap:nowrap;gap:clamp(18px,1.9vw,28px);min-width:0}
+  .footer-icons{grid-column:3;grid-row:1;justify-self:end}
+}
+@media(min-width:961px) and (max-width:1180px){
+  .source-hero{height:auto;min-height:712px}
+  .source-hero-inner{padding:0 126px 76px}
+  .breadcrumb{position:relative;left:auto;top:auto;width:auto;padding-top:62px}
+  .hero-art{position:relative;left:50%;right:auto;top:auto;width:260px;height:260px;margin:24px 0 30px;transform:translateX(-50%)}
+  .source-hero h1{position:relative;left:auto;top:auto;width:570px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center;font-size:42px;line-height:44px}
+  .source-hero p{position:relative;left:auto;top:auto;width:536px;max-width:100%;margin:20px auto 0;text-align:center;font-size:17px;line-height:28px}
+  .hero-actions{position:relative;left:auto;top:auto;justify-content:center;margin-top:30px}
+  .agent-heading{left:126px;width:calc(100% - 252px);transform:none}
+  .agent-search{width:calc(100% - 252px)}
+  .agents-grid{left:126px;width:calc(100% - 252px);grid-template-columns:repeat(3,minmax(0,1fr))}
+  .empty-state{left:126px;right:126px}
+  .agent-section{height:1690px}
+  .more h2{left:126px;width:calc(100% - 252px)}
+  .more-grid{left:126px;width:calc(100% - 252px);grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:769px) and (max-width:1050px){
+  .nav-inner{grid-template-columns:1fr auto;grid-template-rows:auto auto;height:auto;min-height:56px;padding:10px 126px;column-gap:12px;row-gap:10px}
+  .nav-logo{grid-column:1;grid-row:1}
+  .nav-actions{grid-column:2;grid-row:1}
+  .nav-links{grid-column:1/-1;grid-row:2;justify-self:stretch;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:18px;padding:2px 0 6px;scrollbar-width:thin;flex-wrap:nowrap}
+  .nav-links::-webkit-scrollbar{height:3px}
+  .nav-link{font-size:13px;white-space:nowrap;flex-shrink:0}
+  .nav-cta{padding:8px 14px;font-size:13px}
+  .footer-wrap{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:20px;padding:36px 126px}
+  .footer-links{position:static;justify-content:flex-start;gap:10px 22px;flex-wrap:wrap;width:auto}
+      .footer-icons{justify-content:flex-start}
+}
+@media(min-width:769px) and (max-width:960px){
+  .source-hero{height:auto;min-height:688px}
+  .source-hero-inner{padding:0 126px 72px}
+  .breadcrumb{position:relative;left:auto;top:auto;width:auto;padding-top:54px}
+  .hero-art{position:relative;left:50%;right:auto;top:auto;width:236px;height:236px;margin:24px 0 30px;transform:translateX(-50%)}
+  .source-hero h1{position:relative;left:auto;top:auto;width:100%;max-width:620px;margin-left:auto;margin-right:auto;text-align:center;font-size:38px;line-height:40px}
+  .source-hero p{position:relative;left:auto;top:auto;width:100%;max-width:520px;margin:20px auto 0;text-align:center;font-size:16px;line-height:27px}
+  .hero-actions{position:relative;left:auto;top:auto;justify-content:center;margin-top:30px}
+  .agent-section{height:2350px}
+  .agent-heading{left:126px;top:70px;width:calc(100% - 252px);transform:none}
+  .agent-heading h2{width:auto}
+  .agent-search{width:calc(100% - 252px)}
+  .agents-grid{left:126px;top:282px;width:calc(100% - 252px);grid-template-columns:repeat(2,minmax(0,1fr))}
+  .more{height:auto;min-height:1030px}
+  .more h2{left:126px;width:calc(100% - 252px)}
+  .more-grid{left:126px;width:calc(100% - 252px);grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .rail{display:none}
+  .nav-inner{grid-template-columns:1fr auto;grid-template-rows:auto auto;height:auto;min-height:56px;padding:10px 16px;column-gap:12px;row-gap:10px}
+  .nav-logo{grid-column:1;grid-row:1}
+  .nav-actions{grid-column:2;grid-row:1;gap:8px}
+  .nav-links{grid-column:1/-1;grid-row:2;justify-self:stretch;width:auto;justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:18px;padding:2px 0 6px;scrollbar-width:thin;flex-wrap:nowrap}
+  .nav-links::-webkit-scrollbar{height:3px}
+  .nav-link{font-size:13px;white-space:nowrap;flex-shrink:0}
+  .nav-lang-select{height:34px;padding:7px 26px 7px 12px;font-size:13px}
+  .nav-cta{height:34px;min-height:34px;padding:0 14px;font-size:13px}
+  .page-wrap,.footer-wrap{padding-left:16px;padding-right:16px}
+  .source-hero{height:auto;min-height:632px}
+  .source-hero-inner{padding:0 16px 52px}
+  .breadcrumb{position:relative;left:auto;top:auto;width:auto;padding-top:48px;font-size:14px;line-height:22px}
+  .source-hero h1{position:relative;left:auto;top:auto;width:100%;max-width:620px;margin:16px auto 0;text-align:center;font-size:clamp(31px,8vw,38px);line-height:1.06;letter-spacing:-.9px}
+  .source-hero h1 span{display:block;white-space:normal}
+  .source-hero p{position:relative;left:auto;top:auto;width:100%;max-width:520px;margin:18px auto 0;text-align:center;font-size:15px;line-height:25px}
+  .hero-actions{position:relative;left:auto;top:auto;justify-content:center;margin-top:28px;height:auto;align-items:flex-start;flex-wrap:wrap}
+  .hero-art{position:relative;left:50%;top:auto;width:min(300px,74vw);height:min(300px,74vw);margin-top:18px;transform:translateX(-50%)}
+  .agent-section{height:auto;min-height:0}
+  .agent-section-inner{padding:70px 16px 76px}
+  .agent-heading{position:relative;left:auto;top:auto;width:100%;transform:none}
+  .agent-heading h2{width:auto;font-size:32px;line-height:38px;white-space:normal}
+  .agent-heading p{font-size:15px;line-height:24px}
+  .agent-search-wrap{position:relative;left:auto;top:auto;width:100%;height:auto;margin-top:18px;padding:16px 0 35px}
+  .agent-search{width:100%;height:auto}
+  .agents-grid{position:relative;left:auto;top:auto;width:100%;margin-top:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .agent-card{height:158px;padding:13px}
+  .agent-icon{width:34px;height:34px;margin-bottom:10px;border-radius:8px}
+  .agent-copy h3{font-size:13px;line-height:18px}
+  .agent-copy p{font-size:11px;line-height:13px}
+  .empty-state{position:relative;left:auto;right:auto;top:auto;padding:48px 0 0}
+  .more{height:auto}
+  .more-inner{padding:70px 16px 80px}
+  .more h2{position:relative;left:auto;top:auto;width:100%;font-size:32px;line-height:38px}
+  .more-grid{position:relative;left:auto;top:auto;width:100%;margin-top:42px;grid-template-columns:1fr;gap:16px}
+  .more-card{min-height:340px}
+  .final-cta{min-height:616px;padding:0 16px 48px}
+  .cta-content{width:100%;padding:56px 20px}
+  .final-cta h2{font-size:clamp(24px,7vw,32px);line-height:105%}
+  .final-cta p{margin-bottom:28px;font-size:14px}
+  .footer-wrap{flex-direction:column;align-items:flex-start;gap:20px;padding:32px 16px}
+  .footer-links{position:static;left:auto;top:auto;gap:10px 22px;flex-wrap:wrap}
+}
+@media(max-width:540px){
+  .source-hero{min-height:590px}
+  .source-hero-inner{padding-bottom:42px}
+  .source-hero h1{max-width:100%;font-size:var(--hero-mobile-title-size,27px);line-height:1.1}
+  .source-hero h1 span{white-space:nowrap}
+  .source-hero p{max-width:330px;font-size:14px;line-height:23px}
+  .hero-art{width:min(268px,70vw);height:min(268px,70vw);margin-top:16px}
+  .hero-actions .primary-button{padding-left:24px;padding-right:24px}
+  .agent-search{gap:8px}
+  .agent-search-wrap{margin-top:16px;padding:14px 0 32px}
+  .agent-search button{width:82px}
+  .agents-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .more-card{min-height:342px;padding:22px 28px 32px}
+  .more-art{transform:scale(.86);transform-origin:left top;margin-bottom:12px}
+  .more-art.provider-art{margin:-8px 0 8px -10px}
+  .more-copy h3{font-size:18px;white-space:normal}
+  .more-copy p{font-size:13px;line-height:21px}
+  .footer-wrap{padding:24px 16px}
+}
+@media(max-width:380px){
+  .source-hero{min-height:574px}
+  .source-hero h1{font-size:var(--hero-mobile-small-title-size,var(--hero-mobile-title-size,22px));line-height:1.1}
+  .agents-grid{grid-template-columns:1fr}
+  .agent-card{height:152px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+  .reveal-scale{opacity:1;transform:none;filter:none}
+  .reveal-visible.reveal-scale{animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="rail"><div class="rail-inner"></div></div>
+
+<nav class="nav-outer" id="nav">
+  <div class="nav-inner">
+    <a href="../../renew/" class="nav-logo">
+      <svg width="22" viewBox="0 0 291 417" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+        <path d="M198.977 166.759L198.974 166.761L290.492 219.6V280.422L172.637 212.378V331.984H223.199V383.009H172.637V416.977H119.963V212.379L0.245 281.499L0 281.074V220.816L93.625 166.761L93.624 166.76L146.302 136.347L198.977 166.759Z" fill="#26202F"/>
+        <path d="M119.963 121.145V121.14L132.302 128.264L79.624 158.677L0 112.706V52.449L0.245 52.025L119.963 121.145Z" fill="#26202F"/>
+        <path d="M290.492 113.924L212.977 158.676L160.301 128.264L172.637 121.142V121.145L290.492 53.102V113.924Z" fill="#26202F"/>
+        <path d="M172.637 104.977L146.302 120.182L119.963 104.975V28.069L172.637 0V104.977Z" fill="#26202F"/>
+      </svg>
+      <span class="nav-logo-name">AgentKey</span>
+    </a>
+    <div class="nav-links">
+      <a href="../../renew/" class="nav-link">Overview</a>
+      <a href="../../renew/#integrations" class="nav-link">Services</a>
+      <a href="../../renew/#why" class="nav-link">Capabilities</a>
+      <a href="#" class="nav-link" onclick="event.preventDefault()">Pricing</a>
+      <a href="../index.html" class="nav-link active">Intergrations</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-lang-wrap">
+        <select class="nav-lang-select" aria-label="Language">
+          <option>English</option>
+          <option>中文</option>
+          <option>日本語</option>
+          <option>한국어</option>
+          <option>Deutsch</option>
+          <option>Français</option>
+          <option>Español</option>
+        </select>
+      </div>
+      <a href="https://console.agentkey.app/" class="nav-cta" target="_blank" rel="noopener noreferrer">Login</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="source-hero">
+    <div class="source-hero-inner">
+      <div class="breadcrumb"><a href="../index.html#sources">All sources</a><span class="breadcrumb-separator" aria-hidden="true">/</span><span class="breadcrumb-current">Taobao</span></div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-outer-frame"></div>
+        <div class="hero-outer-noise"></div>
+        <svg class="hero-glass-ring" viewBox="0 0 272 272" aria-hidden="true">
+          <rect class="glass-base" x="1" y="1" width="270" height="270" rx="59"/>
+          <rect class="glass-sweep" x="1" y="1" width="270" height="270" rx="59"/>
+          <rect class="glass-sweep accent" x="1" y="1" width="270" height="270" rx="59"/>
+        </svg>
+        <img class="hero-source-logo" src="../local-assets/source-detail/source-logos/taobao.svg" alt="Taobao logo"/>
+      </div>
+      <h1 style="--hero-mobile-title-size:27px;--hero-mobile-small-title-size:27px"><span>Connect Taobao to your </span><span>AI Agent with AgentKey</span></h1>
+      <p>Connect Taobao data to your AI workflows with a single API key.</p>
+      <div class="hero-actions">
+        <a class="primary-button" href="https://console.agentkey.app/" target="_blank" rel="noopener noreferrer">Register Key</a>
+        <a class="secondary-button" href="https://docs.agentkey.app" target="_blank" rel="noopener noreferrer">View Docs</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="agent-section" id="agents">
+    <div class="agent-section-inner">
+      <div class="agent-heading">
+        <h2>Choose your AI agent</h2>
+        <p>Select the agent architecture you want to power with Taobao data.</p>
+      </div>
+      <div class="agent-search-wrap">
+        <form class="agent-search" id="agent-search">
+          <label class="search-box">
+            <img src="../local-assets/figma-integrations/search-icon.svg" alt=""/>
+            <input id="agent-query" type="search" placeholder="Search agents..." autocomplete="off"/>
+          </label>
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <div class="agents-grid" id="agents-grid"></div>
+      <div class="empty-state" id="agent-empty">No matching agents.</div>
+    </div>
+  </section>
+
+  <section class="more">
+    <div class="more-inner">
+      <h2>Discover more possibilities</h2>
+      <div class="more-grid">
+        <article class="more-card">
+          <div class="more-art" aria-hidden="true">
+            <img src="../local-assets/figma-integrations/discover-missing-agent.svg" alt=""/>
+          </div>
+          <div class="more-copy">
+            <h3>Missing your AI agent or data source?</h3>
+            <p>Don't see the agent framework or data source you need? Let us know - we're constantly expanding our library of supported integrations.</p>
+          </div>
+          <a class="primary-button" href="https://t.me/AgentKey_Official" target="_blank" rel="noopener noreferrer">Tell us what you need <img src="../local-assets/figma-integrations/arrow-up-right.svg" alt="" width="16" height="16"/></a>
+        </article>
+        <article class="more-card">
+          <div class="more-art provider-art" aria-hidden="true">
+            <img src="../local-assets/figma-integrations/discover-provider-listed.svg" alt=""/>
+          </div>
+          <div class="more-copy">
+            <h3>Want your service listed?</h3>
+            <p>If you're a data provider or platform and want to be available to AI agents on AgentKey, reach out to discuss partnership opportunities.</p>
+          </div>
+          <a class="primary-button" href="https://t.me/AgentKey_Official" target="_blank" rel="noopener noreferrer">Reach out <img src="../local-assets/figma-integrations/arrow-up-right.svg" alt="" width="16" height="16"/></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="cta-content">
+      <div class="cta-logo" aria-hidden="true">
+        <svg width="38" viewBox="0 0 291 417" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M198.977 166.759L198.974 166.761L290.492 219.6V280.422L172.637 212.378V331.984H223.199V383.009H172.637V416.977H119.963V212.379L0.245 281.499L0 281.074V220.816L93.625 166.761L93.624 166.76L146.302 136.347L198.977 166.759Z" fill="#fff"/>
+          <path d="M119.963 121.145V121.14L132.302 128.264L79.624 158.677L0 112.706V52.449L0.245 52.025L119.963 121.145Z" fill="#fff"/>
+          <path d="M290.492 113.924L212.977 158.676L160.301 128.264L172.637 121.142V121.145L290.492 53.102V113.924Z" fill="#fff"/>
+          <path d="M172.637 104.977L146.302 120.182L119.963 104.975V28.069L172.637 0V104.977Z" fill="#fff"/>
+        </svg>
+      </div>
+      <h2>AgentKey is live.<br/>Plug your agent in.</h2>
+      <p>One key for search, scrape, social and crypto APIs. One subscription — that’s it.</p>
+      <a class="primary-button" href="https://console.agentkey.app/" target="_blank" rel="noopener">Try it for free</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-wrap">
+    <div class="footer-logo">
+      <svg width="20" viewBox="0 0 291 417" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+        <path d="M198.977 166.759L198.974 166.761L290.492 219.6V280.422L172.637 212.378V331.984H223.199V383.009H172.637V416.977H119.963V212.379L0.245 281.499L0 281.074V220.816L93.625 166.761L93.624 166.76L146.302 136.347L198.977 166.759Z" fill="#fff"/>
+        <path d="M119.963 121.145V121.14L132.302 128.264L79.624 158.677L0 112.706V52.449L0.245 52.025L119.963 121.145Z" fill="#fff"/>
+        <path d="M290.492 113.924L212.977 158.676L160.301 128.264L172.637 121.142V121.145L290.492 53.102V113.924Z" fill="#fff"/>
+        <path d="M172.637 104.977L146.302 120.182L119.963 104.975V28.069L172.637 0V104.977Z" fill="#fff"/>
+      </svg>
+      <div>
+        <div class="footer-name">AgentKey</div>
+        <div class="footer-copy">© 2026 AgentKey</div>
+      </div>
+    </div>
+    <div class="footer-icons">
+      <a href="https://github.com/chainbase-labs/AgentKey" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="footer-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="https://x.com/agentkeyapp" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="footer-icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="https://fazier.com/launches/agentkey.app" target="_blank" rel="noopener noreferrer" class="footer-badge" aria-label="Fazier launch badge">
+        <img src="../local-assets/footer/fazier-launch-badge.svg" width="120" alt="Fazier badge"/>
+      </a>
+      <a href="https://aiagentsdirectory.com" target="_blank" rel="noopener" title="Discover AI Agents Directory" class="footer-badge">
+        <img src="../local-assets/footer/ai-agents-directory-badge.svg" alt="Featured on AI Agents Directory" width="200" height="50"/>
+      </a>
+    </div>
+    <div class="footer-links">
+      <a href="https://docs.agentkey.app" target="_blank" rel="noopener" class="footer-link">Docs</a>
+      <a href="/privacy.html" class="footer-link">Privacy</a>
+      <a href="/terms.html" class="footer-link">Terms</a>
+      <a href="mailto:support@agentkey.app" class="footer-link">Support</a>
+      <a href="https://console.agentkey.app/store" target="_blank" rel="noopener noreferrer" class="footer-link">Status</a>
+      <a href="#" class="footer-link">About</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const agents=[
+  {name:"Claude code",desc:"Anthropic's terminal agent for editing, testing, and understanding codebases.",logo:"../local-assets/source-detail/agent-card-icons/claude.png",href:"claude-code/index.html"},
+  {name:"Claude Desktop",desc:"Anthropic's desktop app for writing, research, and everyday personal workflows.",logo:"../local-assets/source-detail/agent-card-icons/claude.png",href:"claude-desktop/index.html"},
+  {name:"Claude Cowork",desc:"Anthropic's desktop AI assistant for collaborative work and shared tasks.",logo:"../local-assets/source-detail/agent-card-icons/claude.png",href:"claude-cowork/index.html"},
+  {name:"Codex",desc:"OpenAI's coding agent for editing, running, and understanding software projects.",logo:"../local-assets/source-detail/agent-card-icons/codex.png",href:"codex/index.html"},
+  {name:"ChatGPT",desc:"OpenAI's versatile assistant for writing, coding, research, and daily tasks.",logo:"../local-assets/source-detail/agent-card-icons/chatgpt.png",href:"chatgpt/index.html"},
+  {name:"Windsurf",desc:"An AI development environment that helps developers build software collaboratively.",logo:"../local-assets/source-detail/agent-card-icons/windsurf.png",href:"windsurf/index.html"},
+  {name:"Cursor",desc:"An AI code editor built for fast, context-aware software development.",logo:"../local-assets/source-detail/agent-card-icons/cursor.png",href:"cursor/index.html"},
+  {name:"Cursor CLI",desc:"Cursor's command-line tool for AI-assisted coding inside terminal workflows daily.",logo:"../local-assets/source-detail/agent-card-icons/cursor.png",href:"cursor-cli/index.html"},
+  {name:"Gemini CLI",desc:"Google's command-line AI assistant for coding, research, and developer workflows.",logo:"../local-assets/source-detail/agent-card-icons/gemini.png",href:"gemini-cli/index.html"},
+  {name:"OpenCode",desc:"A terminal coding agent that understands natural language project requests.",logo:"../local-assets/source-detail/agent-card-icons/opencode.png",href:"opencode/index.html"},
+  {name:"OpenClaw",desc:"A chat-based agent for coding, automation, and developer task workflows.",logo:"../local-assets/source-detail/agent-card-icons/openclaw.png",href:"openclaw/index.html"},
+  {name:"Hermes",desc:"A conversational AI assistant for reasoning, writing, and task support.",logo:"../local-assets/source-detail/agent-card-icons/hermes.png",href:"hermes/index.html"},
+  {name:"Antigravity",desc:"An AI workspace for planning, exploring, and completing complex tasks.",logo:"../local-assets/source-detail/agent-card-icons/antigravity.png",href:"antigravity/index.html"},
+  {name:"Warp",desc:"A modern terminal with AI assistance for developer productivity work.",logo:"../local-assets/source-detail/agent-card-icons/warp.png",href:"warp/index.html"},
+  {name:"Trae",desc:"An AI coding assistant built around chat-based development workflows productively.",logo:"../local-assets/source-detail/agent-card-icons/trae.png",href:"trae/index.html"},
+  {name:"Kimi CLI",desc:"A command-line assistant for coding, search, and practical task execution.",logo:"../local-assets/source-detail/agent-card-icons/kimi.png",href:"kimi-cli/index.html"},
+  {name:"Qwen Code",desc:"Qwen's coding agent for building, editing, and understanding software projects.",logo:"../local-assets/source-detail/agent-card-icons/qwen-code.png",href:"qwen-code/index.html"},
+  {name:"Kiro CLI",desc:"A CLI agent for structured coding and developer task automation.",logo:"../local-assets/source-detail/agent-card-icons/kiro.png",href:"kiro-cli/index.html"},
+  {name:"Amp",desc:"An AI coding agent for navigating and improving large codebases.",logo:"../local-assets/source-detail/agent-card-icons/amp.png",href:"amp/index.html"},
+  {name:"Crush",desc:"A terminal-based AI assistant for quick coding and project work.",logo:"../local-assets/source-detail/agent-card-icons/crush.png",href:"crush/index.html"},
+  {name:"iFlow CLI",desc:"A command-line agent for coding, workflows, and task execution efficiently.",logo:"../local-assets/source-detail/agent-card-icons/iflow.png",href:"iflow-cli/index.html"},
+  {name:"Qoder",desc:"An AI assistant for coding, reasoning, and solving developer tasks.",logo:"../local-assets/source-detail/agent-card-icons/qoder.png",href:"qoder/index.html"},
+  {name:"WorkBuddy",desc:"An AI assistant for workplace productivity and everyday team tasks.",logo:"../local-assets/source-detail/agent-card-icons/workbuddy.png",href:"workbuddy/index.html"},
+  {name:"Pi",desc:"A conversational AI companion for personal questions and everyday support.",logo:"../local-assets/source-detail/agent-card-icons/pi.png",href:"pi/index.html"}
+];
+const grid=document.getElementById("agents-grid");
+const empty=document.getElementById("agent-empty");
+const query=document.getElementById("agent-query");
+let requestAgentStickyRefresh=()=>{};
+function renderAgents(){
+  const term=query.value.trim().toLowerCase();
+  const items=agents.filter(agent=>!term||agent.name.toLowerCase().includes(term));
+  grid.style.display=items.length?"grid":"none";
+  empty.style.display=items.length?"none":"block";
+  grid.innerHTML=items.map(agent=>agent.href?`<a class="agent-card reveal-scale" href="${agent.href}"><div class="agent-icon"><img src="${agent.logo}" alt="${agent.name} logo"/></div><div class="agent-copy"><h3>${agent.name}</h3><p>${agent.desc}</p></div></a>`:`<article class="agent-card reveal-scale"><div class="agent-icon"><img src="${agent.logo}" alt="${agent.name} logo"/></div><div class="agent-copy"><h3>${agent.name}</h3><p>${agent.desc}</p></div></article>`).join("");
+  setupCardReveal();
+  requestAgentStickyRefresh();
+  window.requestAnimationFrame(requestAgentStickyRefresh);
+}
+document.getElementById("agent-search").addEventListener("submit",event=>{event.preventDefault();renderAgents()});
+query.addEventListener("input",renderAgents);
+function setupCardReveal(){
+  const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const targets=[...document.querySelectorAll(".agent-card.reveal-scale,.more-card")];
+  targets.forEach((card,index)=>{
+    card.classList.add("reveal-scale");
+    card.classList.remove("reveal-visible");
+    card.style.animationDelay=`${Math.min(index,12)*32}ms`;
+  });
+  if(reducedMotion){
+    targets.forEach(card=>card.classList.add("reveal-visible"));
+    return;
+  }
+  const observer=new IntersectionObserver((entries,obs)=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting)return;
+      entry.target.classList.add("reveal-visible");
+      obs.unobserve(entry.target);
+    });
+  },{root:null,rootMargin:"0px 0px 24% 0px",threshold:.06});
+  targets.forEach(card=>observer.observe(card));
+}
+function setupAgentSearchSticky(){
+  const section=document.querySelector(".agent-section");
+  const inner=document.querySelector(".agent-section-inner");
+  const searchWrap=document.querySelector(".agent-search-wrap");
+  if(!section||!inner||!searchWrap||!grid||!empty)return;
+  const flowLayout=window.matchMedia("(max-width: 768px)");
+  let ticking=false;
+  function clearSticky(){
+    searchWrap.style.position="";
+    searchWrap.style.top="";
+    searchWrap.style.left="";
+    searchWrap.style.width="";
+    searchWrap.style.zIndex="";
+    searchWrap.style.marginTop="";
+    searchWrap.classList.remove("is-sticky");
+    grid.style.marginTop="";
+    empty.style.marginTop="";
+  }
+  function getLayout(){
+    const innerRect=inner.getBoundingClientRect();
+    const styles=getComputedStyle(inner);
+    const padLeft=parseFloat(styles.paddingLeft)||0;
+    const padRight=parseFloat(styles.paddingRight)||0;
+    const flow=flowLayout.matches;
+    const contentLeft=innerRect.left+padLeft;
+    const contentWidth=innerRect.width-padLeft-padRight;
+    return {
+      innerRect,
+      padLeft,
+      fixedLeft:flow?contentLeft:innerRect.left,
+      fixedWidth:flow?contentWidth:innerRect.width,
+      absoluteLeft:flow?padLeft:0,
+      absoluteWidth:flow?contentWidth:innerRect.width,
+      flow
+    };
+  }
+  function measureNormal(){
+    clearSticky();
+    const styles=getComputedStyle(searchWrap);
+    const marginTop=parseFloat(styles.marginTop)||0;
+    return {
+      offsetTop:searchWrap.offsetTop,
+      height:searchWrap.offsetHeight,
+      reservedHeight:searchWrap.offsetHeight+marginTop
+    };
+  }
+  function updateSticky(){
+    ticking=false;
+    const layout=getLayout();
+    const normal=measureNormal();
+    const stickyTop=0;
+    const sectionTop=section.getBoundingClientRect().top+window.scrollY;
+    const sectionBottom=sectionTop+section.offsetHeight;
+    const start=sectionTop+normal.offsetTop-stickyTop;
+    const end=sectionBottom-window.innerHeight;
+    const scroll=window.scrollY;
+    const topInSection=Math.max(normal.offsetTop,end-sectionTop+stickyTop);
+    if(scroll<start||end<=start){
+      clearSticky();
+      return;
+    }
+    searchWrap.classList.add("is-sticky");
+    searchWrap.style.marginTop="0px";
+    if(layout.flow){
+      const flowStickyPad=parseFloat(getComputedStyle(searchWrap).paddingTop)||0;
+      const stickyReserve=normal.reservedHeight+flowStickyPad;
+      grid.style.marginTop=`${stickyReserve}px`;
+      empty.style.marginTop=`${stickyReserve}px`;
+    }
+    if(scroll<=end){
+      searchWrap.style.position="fixed";
+      searchWrap.style.top=`${stickyTop}px`;
+      searchWrap.style.left=`${layout.fixedLeft}px`;
+      searchWrap.style.width=`${layout.fixedWidth}px`;
+      searchWrap.style.zIndex="8";
+    }else{
+      searchWrap.style.position="absolute";
+      searchWrap.style.top=`${topInSection}px`;
+      searchWrap.style.left=`${layout.absoluteLeft}px`;
+      searchWrap.style.width=`${layout.absoluteWidth}px`;
+      searchWrap.style.zIndex="8";
+    }
+  }
+  function requestUpdate(){
+    if(ticking)return;
+    ticking=true;
+    window.requestAnimationFrame(updateSticky);
+  }
+  requestAgentStickyRefresh=requestUpdate;
+  window.addEventListener("scroll",requestUpdate,{passive:true});
+  window.addEventListener("resize",requestUpdate);
+  flowLayout.addEventListener?.("change",requestUpdate);
+  requestUpdate();
+}
+setupAgentSearchSticky();
+renderAgents();
+</script>
+</body>
+</html>

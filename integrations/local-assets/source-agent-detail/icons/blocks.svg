@@ -1,0 +1,35 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="32" height="32" fill="#5A5A5A"/>
+<g id="Section 1">
+<path d="M-4090 -1186C-4090 -1187.1 -4089.1 -1188 -4088 -1188H1020C1021.1 -1188 1022 -1187.1 1022 -1186V4546C1022 4547.1 1021.1 4548 1020 4548H-4088C-4089.1 4548 -4090 4547.1 -4090 4546V-1186Z" fill="#444444"/>
+<path d="M-4088 -1188V-1187H1020V-1188V-1189H-4088V-1188ZM1022 -1186H1021V4546H1022H1023V-1186H1022ZM1020 4548V4547H-4088V4548V4549H1020V4548ZM-4090 4546H-4089V-1186H-4090H-4091V4546H-4090ZM-4088 4548V4547C-4088.55 4547 -4089 4546.55 -4089 4546H-4090H-4091C-4091 4547.66 -4089.66 4549 -4088 4549V4548ZM1022 4546H1021C1021 4546.55 1020.55 4547 1020 4547V4548V4549C1021.66 4549 1023 4547.66 1023 4546H1022ZM1020 -1188V-1187C1020.55 -1187 1021 -1186.55 1021 -1186H1022H1023C1023 -1187.66 1021.66 -1189 1020 -1189V-1188ZM-4088 -1188V-1189C-4089.66 -1189 -4091 -1187.66 -4091 -1186H-4090H-4089C-4089 -1186.55 -4088.55 -1187 -4088 -1187V-1188Z" fill="white" fill-opacity="0.1"/>
+<g id="1440w">
+<rect width="1440" height="5442" transform="translate(-760 -1060)" fill="white"/>
+<g id="Container">
+<mask id="path-3-inside-1_0_1" fill="white">
+<path d="M-760 -439H680V281H-760V-439Z"/>
+</mask>
+<path d="M-760 -439H680V281H-760V-439Z" fill="#FAFAFA"/>
+<path d="M680 281V280H-760V281V282H680V281Z" fill="#E6E6E6" mask="url(#path-3-inside-1_0_1)"/>
+<g id="Frame 2147238601">
+<g id="Background">
+<rect x="-31.5" y="-31.5" width="585" height="212" rx="19.5" fill="white"/>
+<rect x="-31.5" y="-31.5" width="585" height="212" rx="19.5" stroke="#E6E6E6"/>
+<g id="blocks">
+<rect id="Rectangle 15227" x="20" y="1.33337" width="8" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 15228" x="17.3335" y="4" width="2.66667" height="8" fill="#207480"/>
+<rect id="Rectangle 15229" x="20" y="12" width="8" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 15230" x="28" y="4" width="2.66667" height="8" fill="#207480"/>
+<rect id="Rectangle 15231" x="4" y="6.66663" width="8" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 15232" x="1.3335" y="9.33337" width="2.66667" height="18.6667" fill="#207480"/>
+<rect id="Rectangle 15233" x="4" y="28" width="18.6667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 15234" x="22.6665" y="20" width="2.66667" height="8" fill="#207480"/>
+<rect id="Rectangle 15235" x="4" y="17.3334" width="18.6667" height="2.66667" fill="#207480"/>
+<rect id="Rectangle 15236" x="12" y="9.33337" width="2.66667" height="18.6667" fill="#207480"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>
