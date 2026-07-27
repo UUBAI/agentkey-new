@@ -330,7 +330,7 @@ a.footer-link:hover{color:#ebf1f2}
   .directory-top.is-sticky{padding-top:32px;padding-bottom:32px}
   .search-form{width:100%}
   .cards-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .source-card{padding:17px;height:150px}
+  .source-card{height:auto;min-height:136px;padding:17px 17px 14px}
   .popular-inner{padding-top:70px;padding-bottom:70px}
   .popular-grid{gap:16px}
   .more-inner{padding-top:70px}
@@ -358,11 +358,11 @@ a.footer-link:hover{color:#ebf1f2}
   .search-form{gap:8px}
   .search-submit{padding:0 14px}
   .cards-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .source-card{height:158px;padding:13px}
+  .source-card{height:auto;min-height:124px;padding:13px 13px 12px}
   .source-logo{width:34px;height:34px;margin-bottom:10px;border-radius:9px}
   .source-logo img{width:34px;height:34px}
   .source-card h3{font-size:13px}
-  .source-card p{font-size:11px;line-height:13px}
+  .source-card p{height:26px;font-size:11px;line-height:13px}
   .section-subcopy{max-width:100%;font-size:15px;line-height:24px}
   .popular-grid{grid-template-columns:1fr}
   .integration-card{height:188px;padding:24px}
@@ -1440,8 +1440,8 @@ function setupSourcesSticky(){
         sidebar.style.zIndex="7";
         directoryTop.style.position="absolute";
         directoryTop.style.top=`${topInSection+sidebarHeight}px`;
-        directoryTop.style.left=`${layout.padLeft}px`;
-        directoryTop.style.width=`${layout.directoryWidth}px`;
+        directoryTop.style.left="0";
+        directoryTop.style.width="100%";
         directoryTop.style.zIndex="6";
       }
     }else{
