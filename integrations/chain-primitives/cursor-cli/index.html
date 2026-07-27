@@ -52,7 +52,7 @@ img,svg{display:block;max-width:100%;height:auto}
 .breadcrumb a:hover{color:var(--brand)}
 .breadcrumb-separator{flex:0 0 auto;margin:0 18px;color:#9ca3af}
 .breadcrumb a:first-child{flex:0 0 auto}.breadcrumb-link,.breadcrumb-current{flex:0 0 auto;min-width:0;overflow:visible;text-overflow:clip;white-space:nowrap}.breadcrumb-current{color:#26202f}
-.source-hero h1{position:absolute;left:126px;top:143px;width:570px;font-size:var(--hero-title-size,48px);line-height:var(--hero-title-line,53px);font-weight:600;letter-spacing:-1.44px;color:var(--ink)}
+.source-hero h1{position:absolute;left:126px;top:143px;width:570px;font-size:var(--hero-title-size,43px);line-height:var(--hero-title-line,48px);font-weight:600;letter-spacing:-1.29px;color:var(--ink)}
 .source-hero h1 span{display:block;white-space:var(--hero-title-space,nowrap)}
 .source-hero p{position:absolute;left:126px;top:var(--hero-copy-top,277px);width:536px;font-size:18px;line-height:30px;font-weight:400;letter-spacing:-.18px;color:var(--muted)}
 .hero-actions{position:absolute;left:126px;top:var(--hero-actions-top,396px);height:auto;display:flex;align-items:flex-start;gap:8px}
@@ -281,7 +281,7 @@ a.footer-link:hover{color:#ebf1f2}
 /* Source + agent detail page */
 .source-agent-page{--agent-accent:#26202F;--agent-bg:#202020}
 .source-agent-page .breadcrumb{top:89px;width:min(720px,calc(100% - 252px));font-size:14px;line-height:23.1px}
-.source-agent-page .source-hero h1{top:125px;width:562px;font-size:48px;line-height:53px;letter-spacing:-1.44px}
+.source-agent-page .source-hero h1{top:125px;width:570px;font-size:43px;line-height:48px;letter-spacing:-1.29px}
 .source-agent-page .source-hero h1.hero-title-split+p{top:253px}
 .source-agent-page .source-hero h1.hero-title-split~.hero-actions{top:432px}
 .source-agent-page .source-hero p{top:206px;width:562px;line-height:29.7px}
@@ -422,7 +422,7 @@ a.footer-link:hover{color:#ebf1f2}
   .source-agent-page .hero-actions{top:auto}
   .source-agent-page .source-hero h1.hero-title-split+p,
   .source-agent-page .source-hero h1.hero-title-split~.hero-actions{top:auto}
-  .source-agent-page .source-hero h1{width:min(562px,100%)}
+  .source-agent-page .source-hero h1{width:min(570px,100%)}
   .source-agent-page .source-hero p{width:min(562px,100%)}
 }
 @media(min-width:769px) and (max-width:820px){
@@ -470,6 +470,12 @@ a.footer-link:hover{color:#ebf1f2}
   .copy-btn{margin-top:-2px}
 }
 
+/* Source-agent hero title matches source detail sizing */
+@media(min-width:961px) and (max-width:1180px){.source-agent-page .source-hero h1,.source-agent-page .source-hero h1.hero-title-split{font-size:42px;line-height:44px;letter-spacing:-1.29px}}
+@media(min-width:769px) and (max-width:960px){.source-agent-page .source-hero h1,.source-agent-page .source-hero h1.hero-title-split{font-size:38px;line-height:40px;letter-spacing:-1.29px}}
+@media(max-width:768px){.source-agent-page .source-hero h1,.source-agent-page .source-hero h1.hero-title-split{font-size:clamp(31px,8vw,38px);line-height:1.06;letter-spacing:-.9px}}
+@media(max-width:540px){.source-agent-page .source-hero h1,.source-agent-page .source-hero h1.hero-title-split{font-size:var(--hero-mobile-title-size,27px);line-height:1.1}}
+@media(max-width:380px){.source-agent-page .source-hero h1,.source-agent-page .source-hero h1.hero-title-split{font-size:var(--hero-mobile-small-title-size,var(--hero-mobile-title-size,22px));line-height:1.1}}
 </style>
 </head>
 <body>
