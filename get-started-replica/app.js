@@ -163,7 +163,6 @@ function syncBodyModalLock() {
   const agentOpen = agentModalOverlay && !agentModalOverlay.hidden;
   const onboardingOpen = onboardingOverlay && !onboardingOverlay.hidden;
   document.body.classList.toggle("modal-open", agentOpen || onboardingOpen);
-  document.body.classList.toggle("agent-modal-open", agentOpen);
 }
 
 function renderOnboardingStep(animate = true, direction = "next") {
