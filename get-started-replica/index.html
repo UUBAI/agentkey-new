@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Local AgentKey Get Started interface replica" />
+    <title>AgentKey Dashboard — Local Replica</title>
+    <link rel="icon" href="./assets/agentkey-brand/logo.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="brand">
+          <img class="brand-mark" src="./assets/agentkey-brand/logo.png" alt="" />
+          <span>AgentKey</span>
+        </div>
+
+        <nav class="primary-nav">
+          <button class="nav-item" type="button">
+            <img src="./assets/agentkey-brand/figma-ui/nav-dashboard.svg" alt="" />
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item is-active" type="button">
+            <img src="./assets/agentkey-brand/figma-ui/nav-get-started.svg" alt="" />
+            <span>Get Started</span>
+            <span class="new-badge">NEW</span>
+          </button>
+          <button class="nav-item" type="button">
+            <img src="./assets/agentkey-brand/ui-store-gray.svg" alt="" />
+            <span>Marketplace</span>
+          </button>
+          <button class="nav-item" type="button">
+            <img src="./assets/agentkey-brand/figma-ui/nav-credits.svg" alt="" />
+            <span>Credits</span>
+          </button>
+          <button class="nav-item" type="button">
+            <img src="./assets/agentkey-brand/figma-ui/nav-call-logs.svg" alt="" />
+            <span>Call Logs</span>
+          </button>
+          <button class="nav-item" type="button">
+            <img src="./assets/agentkey-brand/figma-ui/nav-api-keys.svg" alt="" />
+            <span>API Keys</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="legal-links">
+            <button type="button">Terms of Service</button>
+            <button type="button">Privacy Policy</button>
+          </div>
+
+          <section class="help-links" aria-labelledby="help-heading">
+            <p id="help-heading">NEED MORE HELP?</p>
+            <button type="button">
+              <img src="./assets/agentkey-brand/figma-ui/help-x.svg" alt="" />
+              Twitter / X
+              <img class="external" src="./assets/agentkey-brand/figma-ui/help-external.svg" alt="" />
+            </button>
+            <button type="button">
+              <img src="./assets/agentkey-brand/figma-ui/help-github.svg" alt="" />
+              GitHub
+              <img class="external" src="./assets/agentkey-brand/figma-ui/help-external.svg" alt="" />
+            </button>
+            <button type="button">
+              <img src="./assets/agentkey-brand/figma-ui/help-telegram.svg" alt="" />
+              Telegram
+              <img class="external" src="./assets/agentkey-brand/figma-ui/help-external.svg" alt="" />
+            </button>
+          </section>
+
+          <section class="status" aria-label="System status">
+            <p>STATUS</p>
+            <div><span class="status-dot"></span>All systems operational</div>
+          </section>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="breadcrumb">
+            <span>Welcome</span>
+            <span>/</span>
+            <strong>Get Started</strong>
+          </div>
+          <div class="topbar-actions">
+            <button class="language-button" type="button">EN <img src="./assets/agentkey-brand/figma-ui/header-lang-chevron.svg" alt="" aria-hidden="true" /></button>
+            <div class="account-upgrade-group">
+              <button class="account-button" type="button">
+                <img class="avatar" src="./assets/agentkey-brand/figma-ui/header-avatar.png" alt="" aria-hidden="true" />
+                <span>i***i@gmail.com</span>
+                <img src="./assets/agentkey-brand/figma-ui/header-account-chevron.svg" alt="" aria-hidden="true" />
+              </button>
+              <button class="upgrade-button" type="button">Upgrade</button>
+            </div>
+          </div>
+        </header>
+
+        <div class="content-scroll">
+          <section class="onboarding">
+            <div class="hero-copy">
+              <p class="welcome-line">🎉 Welcome to Agentkey</p>
+              <h1>Which agent are you using?</h1>
+              <p>Pick it below and we'll match the install to your setup — then one prompt to see it work.</p>
+            </div>
+
+            <section class="agent-picker" aria-labelledby="agent-picker-heading">
+              <div class="search-wrap">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
+                <input id="agent-search" type="search" placeholder="Search agents..." autocomplete="off" />
+                <button class="search-clear" id="agent-search-clear" type="button" aria-label="Clear search"></button>
+                <span id="agent-count">26 of 26</span>
+              </div>
+
+              <div id="agent-grid" class="agent-grid" aria-live="polite"></div>
+              <p id="empty-state" class="empty-state" hidden>No matching agents.</p>
+            </section>
+
+            <section class="missing-agent" aria-labelledby="missing-agent-title">
+              <h2 id="missing-agent-title">Don't see your agent?</h2>
+              <div class="missing-agent-grid">
+                <div class="missing-agent-column">
+                  <p>Paste our universal setup prompt to set it up now if it's chat-capable.</p>
+                  <button class="prompt-copy" type="button" aria-label="Copy setup prompt">
+                    <span class="prompt-copy-text">Install the AgentKey skill from ClawHub: https://clawhub.ai/chainbase/agentkey</span>
+                    <span class="prompt-copy-action" aria-hidden="true">
+                      <img src="./assets/agentkey-brand/figma-ui/copy.svg" alt="" />
+                    </span>
+                  </button>
+                </div>
+                <div class="missing-agent-divider" aria-hidden="true"></div>
+                <div class="missing-agent-column">
+                  <p>Tell us your agent name, We'll notify <em>you@gmail.com</em> when it ships.</p>
+                  <form class="agent-request">
+                    <input type="text" placeholder="Your agent name..." />
+                    <button type="submit">Send</button>
+                  </form>
+                </div>
+              </div>
+            </section>
+          </section>
+        </div>
+      </main>
+
+      <button class="chat-button" type="button" aria-label="Open chat window">
+        <img src="./assets/agentkey-brand/figma-ui/chat.svg" alt="" />
+      </button>
+    </div>
+
+    <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+    <div class="agent-modal-overlay" id="agent-modal" hidden>
+      <div class="agent-modal-backdrop" data-modal-close></div>
+      <section class="agent-modal" role="dialog" aria-modal="true" aria-labelledby="modal-agent-name">
+        <button class="agent-modal-close" type="button" aria-label="Close setup modal" data-modal-close>
+          <img src="./assets/figma-agent-modal/close-icon.svg" alt="" />
+        </button>
+
+        <div class="agent-modal-scroll-body">
+          <div class="agent-modal-hero" aria-hidden="true">
+            <canvas class="agent-modal-dotmatrix" id="agent-modal-dotmatrix"></canvas>
+            <div class="agent-modal-glow"></div>
+            <div class="agent-modal-logo-frame">
+              <img id="modal-agent-logo" src="./assets/source-detail/agent-card-icons/claude.png" alt="" />
+            </div>
+          </div>
+
+          <div class="agent-modal-content">
+            <header class="agent-modal-heading">
+              <h2 id="modal-agent-name">Claude code</h2>
+              <p id="modal-agent-description">Anthropic's terminal agent for editing, testing, and understanding codebases.</p>
+            </header>
+
+            <div class="install-tabs" role="tablist" aria-label="Installation method">
+              <button class="install-tab is-active" type="button" role="tab" aria-selected="true" data-install-tab="marketplace">
+                <img src="./assets/figma-agent-modal/marketplace-icon-brand.svg" alt="" />
+                <span>Marketplace</span>
+              </button>
+              <button class="install-tab" type="button" role="tab" aria-selected="false" data-install-tab="prompt">Prompt</button>
+              <button class="install-tab" type="button" role="tab" aria-selected="false" data-install-tab="command">Command Line</button>
+            </div>
+
+            <div class="install-panel" id="install-panel"></div>
+          </div>
+        </div>
+        <div class="agent-modal-scrollbar" aria-hidden="true"><div class="agent-modal-scroll-thumb"></div></div>
+      </section>
+    </div>
+
+    <div class="onboarding-modal-overlay" id="onboarding-modal">
+      <div class="onboarding-modal-backdrop" data-onboarding-close></div>
+      <section class="onboarding-modal" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+        <button class="onboarding-modal-close" type="button" aria-label="Close onboarding" data-onboarding-close>
+          <img src="./assets/figma-onboarding/arrow-left.svg" alt="" />
+        </button>
+
+        <div class="onboarding-modal-media" aria-hidden="true">
+          <img id="onboarding-image" src="./assets/figma-onboarding/step-0-install-agentkey.png" alt="" />
+        </div>
+        <div class="onboarding-progress" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="onboarding-modal-content">
+          <h2 id="onboarding-title">How to install AgentKey for your agent</h2>
+          <p id="onboarding-description">We support multiple agents, each with at least two installation options.</p>
+        </div>
+
+        <div class="onboarding-modal-nav" aria-label="Onboarding steps">
+          <button id="onboarding-prev" type="button" aria-label="Previous step">
+            <img src="./assets/figma-onboarding/arrow-right.svg" alt="" />
+          </button>
+          <button id="onboarding-next" type="button" aria-label="Next step">
+            <img src="./assets/figma-onboarding/arrow-right.svg" alt="" />
+            <span>Got it</span>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
