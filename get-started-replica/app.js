@@ -568,12 +568,12 @@ function renderOsToggle() {
   `;
 }
 
-function renderInlineCodeCard({ title, code }) {
+function renderInlineCodeCard({ title, code, showOsToggle = false }) {
   return `
     <div class="inline-code-card">
       <div class="inline-code-head">
         <div class="inline-code-title">${escapeHtml(title)}</div>
-        ${renderOsToggle()}
+        ${showOsToggle ? renderOsToggle() : ""}
       </div>
       <div class="code-box">
         <div class="code-box-inner">
@@ -633,7 +633,7 @@ function renderCommandPanel() {
         ${renderStep(2, `Paste the command below and run it.`, {
           subcopy: `AgentKey registers the MCP server and writes your key into ~/.claude/.<br />Takes ~10 seconds. Idempotent — safe to re-run if anything looks off.`
         })}
-        ${renderInlineCodeCard({ title: "Command", code: commandFor(activeAgent) })}
+        ${renderInlineCodeCard({ title: "Command", code: commandFor(activeAgent), showOsToggle: true })}
         ${renderStep(3, `Activate with your first command.`, { expandable: true })}
         ${renderPromptExamples()}
       </div>
