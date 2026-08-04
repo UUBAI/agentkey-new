@@ -1069,19 +1069,25 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
+  gap: 12px;
   padding: 0;
   transform: translateX(0);
 }
 
 .onboarding-modal-nav button {
-  display: grid;
-  width: 20px;
-  height: 20px;
-  place-items: center;
+  display: inline-flex;
+  width: 72px;
+  min-width: 72px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  border: 1px solid #afb5be;
+  border-radius: 8px;
   opacity: 1;
   transition:
     width 180ms ease,
+    border-color 160ms ease,
     color 160ms ease,
     background-color 160ms ease,
     opacity 160ms ease,
@@ -1094,31 +1100,44 @@ button {
 
 .onboarding-modal-nav button:disabled {
   cursor: default;
-  opacity: 0.28;
+  border-color: #d8dee8;
+  opacity: 1;
 }
 
-.onboarding-modal-nav img {
-  width: 20px;
-  height: 20px;
+.onboarding-modal-nav .onboarding-nav-icon {
+  width: 12px;
+  height: 7.2px;
+  flex: 0 0 auto;
 }
 
 .onboarding-modal-nav button span {
   display: none;
 }
 
-#onboarding-prev img {
-  transform: rotate(180deg);
+#onboarding-prev .onboarding-nav-icon {
+  transform: rotate(90deg);
+}
+
+#onboarding-next .onboarding-nav-icon {
+  transform: rotate(-90deg);
+}
+
+#onboarding-prev .onboarding-nav-icon.is-disabled {
+  display: none;
+}
+
+#onboarding-prev:disabled .onboarding-nav-icon.is-active {
+  display: none;
+}
+
+#onboarding-prev:disabled .onboarding-nav-icon.is-disabled {
+  display: block;
 }
 
 #onboarding-next.is-final {
-  display: inline-flex;
-  width: auto;
+  width: 84px;
   min-width: 84px;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  padding: 0 24px;
-  border-radius: 8px;
+  border-color: #26202f;
   color: #fff;
   background: #26202f;
   font-size: 14px;
